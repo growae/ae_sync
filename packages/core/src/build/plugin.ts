@@ -51,7 +51,5 @@ const aesync = {
 export { aesync };`
 
 const API_CODE = `\
-export let db = undefined;
-export let client = undefined;
-export function setDb(d) { db = d; }
-export function setClient(c) { client = c; }`
+export const db = globalThis.__AESYNC_DB__;
+export const client = globalThis.__AESYNC_CLIENT__;`

@@ -88,12 +88,10 @@ describe('Build System', () => {
       expect(code).toContain('/tmp/test/schema.ts')
     })
 
-    it('loads ae-sync:api with db and client placeholders', () => {
+    it('loads ae-sync:api with db and client from globalThis', () => {
       const code = load.call(plugin, '\0ae-sync:api')
-      expect(code).toContain('db')
-      expect(code).toContain('client')
-      expect(code).toContain('setDb')
-      expect(code).toContain('setClient')
+      expect(code).toContain('globalThis.__AESYNC_DB__')
+      expect(code).toContain('globalThis.__AESYNC_CLIENT__')
     })
 
     it('returns null for unknown module IDs', () => {

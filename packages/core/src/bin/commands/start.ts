@@ -5,10 +5,13 @@ import { createBuild } from '../../build/index.js'
 import type { BuildResult } from '../../build/index.js'
 import { createShadowTables } from '../../database/shadow.js'
 import { graphqlMiddleware } from '../../graphql/index.js'
+import { createIndexingCache } from '../../indexing/cache.js'
+import { processEventBatch } from '../../indexing/executor.js'
 import { createServer } from '../../server/index.js'
 import type { SyncStatusProvider } from '../../server/types.js'
 import { createSync } from '../../sync/index.js'
 import type { SyncEngine } from '../../sync/index.js'
+import type { MatchedEvent } from '../../sync/types.js'
 
 interface StartOptions {
   port: string
@@ -58,7 +61,12 @@ async function runStart(opts: StartOptions): Promise<void> {
 
   jsonLog('info', 'Starting ae-sync in production mode')
 
-  const build = await createBuild({ rootDir, watch: false })
+  const build = await createBuild({
+    rootDir,
+    watch: false,
+    configPath: opts.config,
+    schemaPath: opts.schema,
+  })
 
   let result: BuildResult
   try {
@@ -113,8 +121,14 @@ async function runStart(opts: StartOptions): Promise<void> {
       })),
     }
   }
+  ;(globalThis as Record<string, unknown>).__AESYNC_DB__ = database.qb
+  ;(globalThis as Record<string, unknown>).__AESYNC_CLIENT__ = null
 
-  const server = createServer({ port, hostname }, statusProvider)
+  const server = createServer({
+    config: { port, hostname },
+    statusProvider,
+    db: database.qb,
+  })
 
   const gqlApp = graphqlMiddleware(schema as Record<string, Table>, database.qb)
   server.app.route('/graphql', gqlApp)
@@ -138,11 +152,48 @@ async function runStart(opts: StartOptions): Promise<void> {
   await server.start()
   jsonLog('info', 'Server started', { port, hostname })
 
+  const cache = createIndexingCache()
+  let eventBuffer: MatchedEvent[] = []
+  const BATCH_SIZE = 100
+
+  async function flushEventBuffer() {
+    if (eventBuffer.length === 0) return
+    const batch = eventBuffer
+    eventBuffer = []
+    try {
+      const result = await processEventBatch({
+        events: batch,
+        database,
+        tables: schema as Record<string, PgTable>,
+        networkName: config.network.name ?? 'mainnet',
+        cache,
+        checkpointHeight: batch[batch.length - 1]!.event.height,
+        checkpointBlockHash: batch[batch.length - 1]!.event.blockHash,
+      })
+      jsonLog('info', 'Batch processed', {
+        events: result.eventsProcessed,
+        duration: result.duration,
+      })
+    } catch (err) {
+      jsonLog('error', 'Batch processing error', {
+        error: err instanceof Error ? err.message : String(err),
+      })
+    }
+  }
+
+  sync.on('event', async (matched) => {
+    eventBuffer.push(matched)
+    if (eventBuffer.length >= BATCH_SIZE) {
+      await flushEventBuffer()
+    }
+  })
+
   sync.on('error', (err) => {
     jsonLog('error', 'Sync error', { error: err.message })
   })
 
-  sync.on('backfillComplete', (name) => {
+  sync.on('backfillComplete', async (name) => {
+    await flushEventBuffer()
     jsonLog('info', 'Backfill complete', { contract: name })
   })
 

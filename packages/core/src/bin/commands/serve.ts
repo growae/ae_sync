@@ -33,7 +33,12 @@ async function runServe(opts: ServeOptions): Promise<void> {
   console.log('\x1b[36m◆\x1b[0m ae-sync serve (API-only)')
   console.log('')
 
-  const build = await createBuild({ rootDir, watch: false })
+  const build = await createBuild({
+    rootDir,
+    watch: false,
+    configPath: opts.config,
+    schemaPath: opts.schema,
+  })
 
   let result: Awaited<
     ReturnType<Awaited<ReturnType<typeof createBuild>>['run']>
@@ -51,6 +56,8 @@ async function runServe(opts: ServeOptions): Promise<void> {
 
   const { schema, database, api } = result
   await build.close()
+  ;(globalThis as Record<string, unknown>).__AESYNC_DB__ = database.qb
+  ;(globalThis as Record<string, unknown>).__AESYNC_CLIENT__ = null
 
   console.log('\x1b[32m✓\x1b[0m Config and schema loaded')
 
@@ -59,7 +66,11 @@ async function runServe(opts: ServeOptions): Promise<void> {
     contracts: [],
   })
 
-  const server = createServer({ port, hostname }, statusProvider)
+  const server = createServer({
+    config: { port, hostname },
+    statusProvider,
+    db: database.qb,
+  })
 
   const gqlApp = graphqlMiddleware(schema as Record<string, Table>, database.qb)
   server.app.route('/graphql', gqlApp)
