@@ -1,0 +1,19 @@
+FROM node:20-slim AS builder
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile --prod
+COPY . .
+RUN pnpm build
+
+FROM node:20-slim
+WORKDIR /app
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/package.json /app/
+
+LABEL org.opencontainers.image.source="https://github.com/growae/ae_sync"
+LABEL org.opencontainers.image.description="ae_sync slim — Node.js indexer only (connect to external ae_mdw + PostgreSQL)"
+LABEL org.opencontainers.image.licenses="MIT"
+
+EXPOSE 42069
+CMD ["node", "dist/esm/bin/ae-sync.js", "start"]

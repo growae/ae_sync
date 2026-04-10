@@ -20,6 +20,10 @@ RUN pnpm run build
 # Stage 3: Runtime
 FROM ubuntu:22.04
 
+LABEL org.opencontainers.image.source="https://github.com/growae/ae_sync"
+LABEL org.opencontainers.image.description="ae_sync — contract indexing framework for Aeternity"
+LABEL org.opencontainers.image.licenses="MIT"
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 
