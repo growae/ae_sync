@@ -14,9 +14,9 @@
     "check": "biome check --write .",
     "check:ci": "biome ci .",
     "check:types": "pnpm -r --filter='./packages/**' run check:types",
-    "docs:dev": "pnpm --filter site run dev",
-    "docs:build": "pnpm --filter site run build",
-    "docs:preview": "pnpm --filter site run preview",
+    "docs:dev": "pnpm --filter ae-sync-docs run dev",
+    "docs:build": "pnpm --filter ae-sync-docs run build",
+    "docs:preview": "pnpm --filter ae-sync-docs run preview",
     "clean": "pnpm -r --filter='./packages/**' run clean",
     "preinstall": "npx only-allow pnpm",
     "prepare": "git config core.hooksPath .githooks"
