@@ -1,0 +1,26 @@
+{
+  "contract": {
+    "name": "PairFactory",
+    "type_defs": [],
+    "event": {
+      "variant": [{ "PairCreated": ["address", "address", "address"] }]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "create_pair",
+        "arguments": [
+          { "name": "token0", "type": "address" },
+          { "name": "token1", "type": "address" }
+        ],
+        "returns": "address",
+        "stateful": true
+      }
+    ]
+  }
+}

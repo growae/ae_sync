@@ -1,0 +1,19 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ae-sync dev",
+    "start": "ae-sync start",
+    "build": "ae-sync build",
+    "db:migrate": "ae-sync db migrate",
+    "db:reset": "ae-sync db reset"
+  },
+  "dependencies": {
+    "@growae/aesync": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

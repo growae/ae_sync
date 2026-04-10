@@ -1,0 +1,33 @@
+{
+  "contract": {
+    "name": "Pair",
+    "type_defs": [],
+    "event": {
+      "variant": [
+        { "Swap": ["address", "int", "int", "address", "address"] },
+        { "Mint": ["address", "int", "int"] },
+        { "Burn": ["address", "int", "int"] }
+      ]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [
+          { "name": "token0", "type": "address" },
+          { "name": "token1", "type": "address" }
+        ],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "swap",
+        "arguments": [
+          { "name": "amount_in", "type": "int" },
+          { "name": "token_in", "type": "address" }
+        ],
+        "returns": "int",
+        "stateful": true
+      }
+    ]
+  }
+}

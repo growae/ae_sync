@@ -1,0 +1,29 @@
+{
+  "contract": {
+    "name": "MyContract",
+    "type_defs": [],
+    "event": {
+      "variant": [
+        { "Transfer": ["address", "address", "int"] },
+        { "Approval": ["address", "address", "int"] }
+      ]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "transfer",
+        "arguments": [
+          { "name": "to", "type": "address" },
+          { "name": "value", "type": "int" }
+        ],
+        "returns": "unit",
+        "stateful": true
+      }
+    ]
+  }
+}

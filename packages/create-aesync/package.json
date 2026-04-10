@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "type": "module",
   "bin": {
-    "create-aesync": "dist/cli.js"
+    "create-aesync": "./src/cli.ts"
+  },
+  "exports": {
+    ".": { "import": "./src/index.ts" }
   },
   "scripts": {
     "build": "tsup",
@@ -17,7 +20,8 @@
   },
   "devDependencies": {
     "tsup": "^8.5.1",
-    "@types/prompts": "^2.4.9"
+    "@types/prompts": "^2.4.9",
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public"
