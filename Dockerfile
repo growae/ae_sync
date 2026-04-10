@@ -1,7 +1,7 @@
 # Stage 1: ae_mdw binaries
 FROM aeternity/ae_mdw:latest AS mdw
 
-# Stage 2: Build ae_sync
+# Stage 2: Build aesync
 FROM node:20-slim AS builder
 
 RUN corepack enable pnpm
@@ -21,7 +21,7 @@ RUN pnpm run build
 FROM ubuntu:22.04
 
 LABEL org.opencontainers.image.source="https://github.com/growae/ae_sync"
-LABEL org.opencontainers.image.description="ae_sync — contract indexing framework for Aeternity"
+LABEL org.opencontainers.image.description="aesync — contract indexing framework for Aeternity"
 LABEL org.opencontainers.image.licenses="MIT"
 
 ENV DEBIAN_FRONTEND=noninteractive

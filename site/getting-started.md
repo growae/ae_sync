@@ -1,6 +1,6 @@
 # Getting Started
 
-ae_sync is a contract indexing framework for the Aeternity blockchain. It reads events from ae_mdw, processes them through your TypeScript handlers, stores the results in PostgreSQL, and serves the data via auto-generated GraphQL APIs.
+aesync is a contract indexing framework for the Aeternity blockchain. It reads events from ae_mdw, processes them through your TypeScript handlers, stores the results in PostgreSQL, and serves the data via auto-generated GraphQL APIs.
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ The scaffolded project looks like this:
 ```
 my-indexer/
   src/
-    ae-sync.config.ts    # Network, database, and contract config
+    aesync.config.ts    # Network, database, and contract config
     schema.ts            # onchainTable definitions
     index.ts             # Event handler functions
     api/
@@ -33,7 +33,7 @@ my-indexer/
   tsconfig.json
 ```
 
-### `ae-sync.config.ts`
+### `aesync.config.ts`
 
 Defines which network to connect to, the database backend, and which contracts to index:
 
@@ -97,7 +97,7 @@ Handler names follow the pattern `ContractName_EventName`.
 Start the development server with hot-reload:
 
 ```bash
-pnpm ae-sync dev
+pnpm aesync dev
 ```
 
 This will:

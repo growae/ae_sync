@@ -15,7 +15,7 @@ export async function compileIndexing(
 
   await runner.executeFile(indexPath)
 
-  const registry = (await runner.executeId('ae-sync:registry')) as {
+  const registry = (await runner.executeId('aesync:registry')) as {
     aesync: { fns: EventCallback[] }
   }
   const handlers = registry.aesync.fns

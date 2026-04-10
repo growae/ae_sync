@@ -1,7 +1,7 @@
 ---
 layout: home
 hero:
-  name: ae_sync
+  name: aesync
   text: Contract Indexing for Aeternity
   tagline: Index smart contract events from ae_mdw into PostgreSQL with a type-safe schema DSL and auto-generated GraphQL APIs.
   actions:

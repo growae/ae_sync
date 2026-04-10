@@ -4,4 +4,4 @@
 "@growae/create-aesync": minor
 ---
 
-Initial release of ae_sync — contract indexing framework for Aeternity
+Initial release of aesync — contract indexing framework for Aeternity

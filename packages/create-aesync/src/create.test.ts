@@ -101,7 +101,7 @@ describe('scaffold', () => {
     })
 
     expect(existsSync(join(targetDir, 'package.json'))).toBe(true)
-    expect(existsSync(join(targetDir, 'ae-sync.config.ts'))).toBe(true)
+    expect(existsSync(join(targetDir, 'aesync.config.ts'))).toBe(true)
     expect(existsSync(join(targetDir, 'schema.ts'))).toBe(true)
     expect(existsSync(join(targetDir, 'tsconfig.json'))).toBe(true)
     expect(existsSync(join(targetDir, 'src', 'index.ts'))).toBe(true)
@@ -110,7 +110,7 @@ describe('scaffold', () => {
     expect(existsSync(join(targetDir, '.env.example'))).toBe(true)
     expect(existsSync(join(targetDir, '.gitignore'))).toBe(true)
     expect(existsSync(join(targetDir, 'README.md'))).toBe(true)
-    expect(existsSync(join(targetDir, 'ae-sync-env.d.ts'))).toBe(true)
+    expect(existsSync(join(targetDir, 'aesync-env.d.ts'))).toBe(true)
   })
 
   it('should replace project name placeholder', async () => {

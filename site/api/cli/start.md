@@ -1,11 +1,11 @@
-# ae-sync start
+# aesync start
 
-Start ae_sync in production mode. Runs the sync engine and HTTP server. Requires `DATABASE_URL` to be set.
+Start aesync in production mode. Runs the sync engine and HTTP server. Requires `DATABASE_URL` to be set.
 
 ## Usage
 
 ```bash
-ae-sync start [options]
+aesync start [options]
 ```
 
 ## Options
@@ -36,7 +36,7 @@ ae-sync start [options]
 All logs are JSON-formatted for production log aggregation:
 
 ```json
-{"time":"2025-01-15T10:00:00.000Z","level":"info","msg":"Starting ae-sync in production mode"}
+{"time":"2025-01-15T10:00:00.000Z","level":"info","msg":"Starting aesync in production mode"}
 {"time":"2025-01-15T10:00:01.000Z","level":"info","msg":"Config loaded","network":"mainnet","database":"postgres","contracts":["Token"]}
 {"time":"2025-01-15T10:00:02.000Z","level":"info","msg":"Server started","port":42069,"hostname":"0.0.0.0"}
 {"time":"2025-01-15T10:00:02.000Z","level":"info","msg":"Sync engine started"}
@@ -48,18 +48,18 @@ All logs are JSON-formatted for production log aggregation:
 
 ```bash
 # Production start
-DATABASE_URL=postgresql://user:pass@localhost:5432/mydb ae-sync start
+DATABASE_URL=postgresql://user:pass@localhost:5432/mydb aesync start
 
 # Custom port
-DATABASE_URL=postgresql://... ae-sync start --port 8080
+DATABASE_URL=postgresql://... aesync start --port 8080
 
 # With Docker
-docker run -e DATABASE_URL=postgresql://... my-indexer ae-sync start
+docker run -e DATABASE_URL=postgresql://... my-indexer aesync start
 ```
 
 ## Graceful Shutdown
 
-`ae-sync start` handles `SIGINT` and `SIGTERM` signals for graceful shutdown:
+`aesync start` handles `SIGINT` and `SIGTERM` signals for graceful shutdown:
 
 1. Stops the sync engine
 2. Stops the HTTP server

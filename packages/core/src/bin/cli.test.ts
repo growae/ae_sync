@@ -8,7 +8,7 @@ import { registerStart } from './commands/start.js'
 
 function createProgram(): Command {
   const program = new Command()
-  program.name('ae-sync').version('0.0.1').exitOverride()
+  program.name('aesync').version('0.0.1').exitOverride()
   registerDev(program)
   registerStart(program)
   registerServe(program)
@@ -53,7 +53,7 @@ describe('CLI', () => {
     it('includes program name and description', () => {
       const program = createProgram()
       const help = program.helpInformation()
-      expect(help).toContain('ae-sync')
+      expect(help).toContain('aesync')
     })
   })
 

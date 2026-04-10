@@ -1,6 +1,6 @@
-# ae_sync
+# aesync
 
-Contract indexing framework for Aeternity, built on top of [ae_mdw](https://github.com/aeternity/ae_mdw). Define contracts, schemas, and event handlers in TypeScript — ae_sync handles the rest.
+Contract indexing framework for Aeternity, built on top of [ae_mdw](https://github.com/aeternity/ae_mdw). Define contracts, schemas, and event handlers in TypeScript — aesync handles the rest.
 
 Think [Ponder](https://ponder.sh) for Aeternity.
 
@@ -23,7 +23,7 @@ pnpm dev
 
 ## How It Works
 
-**1. Define contracts** in `ae-sync.config.ts`:
+**1. Define contracts** in `aesync.config.ts`:
 
 ```typescript
 import { createConfig } from '@growae/aesync'
@@ -59,8 +59,8 @@ export const swapEvent = onchainTable('swap_event', {
 **3. Write handlers** in `src/index.ts`:
 
 ```typescript
-import { aesync } from 'ae-sync:registry'
-import { swapEvent } from 'ae-sync:schema'
+import { aesync } from 'aesync:registry'
+import { swapEvent } from 'aesync:schema'
 
 aesync.on('DexPair:Swap', async ({ event, context }) => {
   await context.db.insert(swapEvent).values({
@@ -102,25 +102,25 @@ aesync.on('DexPair:Swap', async ({ event, context }) => {
 ## CLI
 
 ```bash
-ae-sync dev          # Development mode with hot reload + PGlite
-ae-sync start        # Production mode with PostgreSQL
-ae-sync serve        # API-only mode (no indexing)
-ae-sync codegen      # Generate type declarations
-ae-sync db list      # Show database state
-ae-sync db reset     # Reset all tables
+aesync dev          # Development mode with hot reload + PGlite
+aesync start        # Production mode with PostgreSQL
+aesync serve        # API-only mode (no indexing)
+aesync codegen      # Generate type declarations
+aesync db list      # Show database state
+aesync db reset     # Reset all tables
 ```
 
 ## Architecture
 
 ```
-ae-sync.config.ts    ─── Contracts + ACI + network
+aesync.config.ts    ─── Contracts + ACI + network
 schema.ts            ─── Drizzle tables (onchainTable)
 src/*.ts             ─── Event handlers (aesync.on)
 src/api/index.ts     ─── Custom Hono routes
         │
         ▼
 ┌──────────────────────────────────────────┐
-│  ae_sync                                 │
+│  aesync                                 │
 │                                          │
 │  Build System (Vite + virtual modules)   │
 │         │                                │
@@ -150,7 +150,7 @@ src/api/index.ts     ─── Custom Hono routes
 
 ## Docker
 
-**Bundled** (ae_mdw + ae_sync + PostgreSQL in one container):
+**Bundled** (ae_mdw + aesync + PostgreSQL in one container):
 
 ```bash
 docker compose up
@@ -197,8 +197,8 @@ ae_sync/
 ├── examples/
 │   └── grow-dex-indexer/  # Production DEX indexer example
 ├── docker/                # supervisord, entrypoint, healthcheck
-├── Dockerfile             # Full image (ae_mdw + ae_sync + PostgreSQL)
-├── Dockerfile.slim        # Slim image (ae_sync only)
+├── Dockerfile             # Full image (ae_mdw + aesync + PostgreSQL)
+├── Dockerfile.slim        # Slim image (aesync only)
 └── docker-compose.yml
 ```
 

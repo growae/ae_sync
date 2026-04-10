@@ -1,6 +1,6 @@
 # Grow DEX Indexer
 
-A production-ready [ae-sync](../../README.md) indexer for the **Grow DEX** on Aeternity. Tracks pair creation, swaps, liquidity events, and per-day aggregations, then exposes the data through REST and GraphQL APIs.
+A production-ready [aesync](../../README.md) indexer for the **Grow DEX** on Aeternity. Tracks pair creation, swaps, liquidity events, and per-day aggregations, then exposes the data through REST and GraphQL APIs.
 
 ## What it indexes
 
@@ -50,7 +50,7 @@ This starts PostgreSQL, ae-mdw, and the indexer. The API is available at `http:/
 
 ### Configuration
 
-Edit `ae-sync.config.ts` to set:
+Edit `aesync.config.ts` to set:
 - Contract addresses (`ct_GROW_FACTORY_ADDRESS`, `ct_GROW_ROUTER_ADDRESS`)
 - `startHeight` to begin indexing from a specific block
 - Network (mainnet/testnet)
@@ -142,7 +142,7 @@ Available at `http://localhost:42069/graphql`. Example queries:
 └─────────┬───────────────────────────────────┘
           │ HTTP + WebSocket
 ┌─────────▼───────────────────────────────────┐
-│             ae-sync engine                   │
+│             aesync engine                    │
 │  ┌──────────┐  ┌──────────┐  ┌───────────┐  │
 │  │ Factory  │  │   Pair   │  │  Router   │  │
 │  │ handler  │  │ handlers │  │  handler  │  │

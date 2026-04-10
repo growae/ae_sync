@@ -1,6 +1,7 @@
 node_modules
 dist
-.ae-sync
+.aesync
+.vitepress/cache
 coverage
 *.tsbuildinfo
 .env

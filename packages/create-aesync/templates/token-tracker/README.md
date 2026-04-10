@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}}
 
-An AEX-9 token tracker built with [ae-sync](https://aesync.dev).
+An AEX-9 token tracker built with [aesync](https://aesync.dev).
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ pnpm dev
 ## Project Structure
 
 ```
-├── ae-sync.config.ts   # Token contract configuration
+├── aesync.config.ts    # Token contract configuration
 ├── schema.ts           # transferEvent, balanceState tables
 ├── src/
 │   ├── index.ts        # Transfer handler with balance tracking

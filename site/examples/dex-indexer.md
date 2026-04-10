@@ -20,7 +20,7 @@ pnpm install
 ## Contract Configuration
 
 ```typescript
-// src/ae-sync.config.ts
+// src/aesync.config.ts
 import { createConfig } from '@growae/aesync'
 import factoryAci from './abis/factory.json'
 import pairAci from './abis/pair.json'
@@ -391,10 +391,10 @@ query {
 
 ```bash
 # Development (PGlite)
-pnpm ae-sync dev
+pnpm aesync dev
 
 # Production
-DATABASE_URL=postgresql://user:pass@localhost:5432/dex pnpm ae-sync start
+DATABASE_URL=postgresql://user:pass@localhost:5432/dex pnpm aesync start
 ```
 
 ## Key Takeaways

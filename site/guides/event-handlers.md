@@ -1,6 +1,6 @@
 # Event Handlers
 
-Event handlers are TypeScript functions that ae_sync calls when it detects matching contract events. They receive the decoded event data and a context object for database operations.
+Event handlers are TypeScript functions that aesync calls when it detects matching contract events. They receive the decoded event data and a context object for database operations.
 
 ## Naming Convention
 
@@ -149,10 +149,10 @@ context.contracts.register('Pair', event.args.pairAddress)
 
 ## Write Batching
 
-ae_sync batches database writes within each event processing cycle. Inserts, updates, and deletes are collected in an in-memory cache and flushed to the database together. This means:
+aesync batches database writes within each event processing cycle. Inserts, updates, and deletes are collected in an in-memory cache and flushed to the database together. This means:
 
 - Multiple inserts to the same table within one handler are batched into a single SQL statement
-- You don't need to worry about transaction management -- ae_sync handles it
+- You don't need to worry about transaction management -- aesync handles it
 - Reads via `context.db.select()` hit the database directly and will not see unflushed writes from the current batch
 
 ## Common Patterns

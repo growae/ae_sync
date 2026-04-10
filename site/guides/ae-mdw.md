@@ -1,17 +1,17 @@
 # ae_mdw Integration
 
-ae_sync uses the [Aeternity Middleware (ae_mdw)](https://github.com/aeternity/ae_mdw) as its data source. ae_mdw is a caching and indexing layer that sits between your application and the Aeternity node, providing a REST API for querying blockchain data.
+aesync uses the [Aeternity Middleware (ae_mdw)](https://github.com/aeternity/ae_mdw) as its data source. ae_mdw is a caching and indexing layer that sits between your application and the Aeternity node, providing a REST API for querying blockchain data.
 
-## How ae_sync Uses ae_mdw
+## How aesync Uses ae_mdw
 
-ae_sync connects to ae_mdw in two ways:
+aesync connects to ae_mdw in two ways:
 
 1. **HTTP API** -- for historical backfill, fetching contract logs, calls, and AEX-9 transfers
 2. **WebSocket** -- for real-time event streaming after backfill is complete
 
 ### Historical Sync
 
-During backfill, ae_sync queries the ae_mdw HTTP API to fetch contract events in batches:
+During backfill, aesync queries the ae_mdw HTTP API to fetch contract events in batches:
 
 ```
 GET /v3/contracts/{contract_id}/logs?limit=100&direction=forward
@@ -21,7 +21,7 @@ It paginates through results using ae_mdw's cursor-based pagination until all hi
 
 ### Real-time Sync
 
-After backfill, ae_sync opens a WebSocket connection to ae_mdw:
+After backfill, aesync opens a WebSocket connection to ae_mdw:
 
 ```
 ws://mainnet.aeternity.io/mdw/v3/websocket
@@ -73,11 +73,11 @@ network: {
 
 ## ae_mdw Data Types
 
-ae_sync's MDW client provides typed interfaces for the common ae_mdw response shapes:
+aesync's MDW client provides typed interfaces for the common ae_mdw response shapes:
 
 ### Contract Logs
 
-Contract logs contain emitted events. ae_sync fetches these to find events matching your configured contracts:
+Contract logs contain emitted events. aesync fetches these to find events matching your configured contracts:
 
 ```typescript
 interface MdwContractLog {
@@ -131,7 +131,7 @@ interface MdwAex9Transfer {
 
 ## Pagination
 
-ae_mdw uses cursor-based pagination. ae_sync provides helpers to paginate through results:
+ae_mdw uses cursor-based pagination. aesync provides helpers to paginate through results:
 
 ```typescript
 import { paginateAll, paginateWithLimit } from '@growae/aesync'
@@ -149,7 +149,7 @@ const recentLogs = await paginateWithLimit(
 
 ## Error Handling
 
-ae_sync handles ae_mdw connection errors with automatic retries and exponential backoff. The MDW client throws typed errors:
+aesync handles ae_mdw connection errors with automatic retries and exponential backoff. The MDW client throws typed errors:
 
 | Error Class | When |
 |---|---|
@@ -159,7 +159,7 @@ ae_sync handles ae_mdw connection errors with automatic retries and exponential 
 
 ## Self-hosted ae_mdw
 
-For production deployments with high throughput, consider running your own ae_mdw instance. Point ae_sync to your local instance:
+For production deployments with high throughput, consider running your own ae_mdw instance. Point aesync to your local instance:
 
 ```typescript
 network: {

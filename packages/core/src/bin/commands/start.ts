@@ -23,7 +23,7 @@ interface StartOptions {
 export function registerStart(program: Command): void {
   program
     .command('start')
-    .description('Start ae-sync in production mode')
+    .description('Start aesync in production mode')
     .option('-p, --port <port>', 'HTTP server port', '42069')
     .option('--hostname <host>', 'HTTP server hostname', '0.0.0.0')
     .option('--config <path>', 'Path to config file')
@@ -59,7 +59,7 @@ async function runStart(opts: StartOptions): Promise<void> {
   const { hostname } = opts
   const rootDir = process.cwd()
 
-  jsonLog('info', 'Starting ae-sync in production mode')
+  jsonLog('info', 'Starting aesync in production mode')
 
   const build = await createBuild({
     rootDir,

@@ -32,7 +32,7 @@ export { primaryKey } from 'drizzle-orm/pg-core/primary-keys'
 /**
  * Branded wrapper around Drizzle's `pgTable`.
  *
- * Creates a table definition tagged with the ae_sync onchain marker so the
+ * Creates a table definition tagged with the aesync onchain marker so the
  * framework can distinguish user-defined indexing tables from arbitrary
  * Drizzle tables at runtime.
  *

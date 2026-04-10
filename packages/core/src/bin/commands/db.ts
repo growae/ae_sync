@@ -7,13 +7,13 @@ export function registerDb(program: Command): void {
   const db = program.command('db').description('Database management commands')
 
   db.command('list')
-    .description('Show internal ae-sync table states')
+    .description('Show internal aesync table states')
     .action(async () => {
       await runDbList()
     })
 
   db.command('reset')
-    .description('Drop all ae-sync tables and re-create')
+    .description('Drop all aesync tables and re-create')
     .option('--confirm', 'Confirm destructive operation')
     .action(async (opts: { confirm?: boolean }) => {
       await runDbReset(opts)
@@ -36,7 +36,7 @@ async function withDatabase(
 }
 
 async function runDbList(): Promise<void> {
-  console.log('\x1b[36m◆\x1b[0m ae-sync db list')
+  console.log('\x1b[36m◆\x1b[0m aesync db list')
   console.log('')
 
   await withDatabase(async (database) => {
@@ -94,7 +94,7 @@ async function runDbReset(opts: { confirm?: boolean }): Promise<void> {
     process.exit(1)
   }
 
-  console.log('\x1b[36m◆\x1b[0m ae-sync db reset')
+  console.log('\x1b[36m◆\x1b[0m aesync db reset')
   console.log('')
 
   await withDatabase(async (database) => {

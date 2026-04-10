@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "ae-sync dev",
-    "start": "ae-sync start",
-    "build": "ae-sync build",
-    "db:migrate": "ae-sync db migrate",
-    "db:reset": "ae-sync db reset"
+    "dev": "aesync dev",
+    "start": "aesync start",
+    "build": "aesync build",
+    "db:migrate": "aesync db migrate",
+    "db:reset": "aesync db reset"
   },
   "dependencies": {
     "@growae/aesync": "latest"

@@ -4,7 +4,7 @@ import type { ViteNodeRunner } from 'vite-node/client'
 import { createConfig } from '../config/index.js'
 import type { AeSyncConfig, CreateConfigParameters } from '../config/types.js'
 
-const CONFIG_FILES = ['ae-sync.config.ts', 'ae-sync.config.js'] as const
+const CONFIG_FILES = ['aesync.config.ts', 'aesync.config.js'] as const
 
 export async function compileConfig(
   runner: ViteNodeRunner,
@@ -31,7 +31,7 @@ export async function compileConfig(
 
   if (!configPath) {
     throw new Error(
-      `No config file found. Expected ae-sync.config.ts or ae-sync.config.js in ${rootDir}`,
+      `No config file found. Expected aesync.config.ts or aesync.config.js in ${rootDir}`,
     )
   }
 

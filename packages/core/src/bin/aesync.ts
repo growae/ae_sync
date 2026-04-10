@@ -14,7 +14,7 @@ const pkg = require('../../package.json') as { version: string }
 const program = new Command()
 
 program
-  .name('ae-sync')
+  .name('aesync')
   .description('Aeternity contract indexing framework')
   .version(pkg.version, '-V, --version', 'Output the version number')
 

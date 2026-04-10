@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "ae-sync dev",
-    "start": "ae-sync start",
-    "serve": "ae-sync serve",
-    "codegen": "ae-sync codegen"
+    "dev": "aesync dev",
+    "start": "aesync start",
+    "serve": "aesync serve",
+    "codegen": "aesync codegen"
   },
   "dependencies": {
     "@growae/aesync": "workspace:*"

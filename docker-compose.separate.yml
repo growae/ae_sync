@@ -24,12 +24,12 @@ services:
       - pg_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  ae-sync:
+  aesync:
     build:
       context: .
       dockerfile: Dockerfile
       target: builder
-    command: ["node", "packages/core/dist/esm/bin/ae-sync.js", "start"]
+    command: ["node", "packages/core/dist/esm/bin/aesync.js", "start"]
     working_dir: /build
     ports:
       - "42069:42069"

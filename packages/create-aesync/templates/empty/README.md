@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}}
 
-An [ae-sync](https://aesync.dev) indexer project.
+An [aesync](https://aesync.dev) indexer project.
 
 ## Quick Start
 
@@ -18,7 +18,7 @@ pnpm dev
 ## Project Structure
 
 ```
-├── ae-sync.config.ts   # Contract & network configuration
+├── aesync.config.ts    # Contract & network configuration
 ├── schema.ts           # Database table definitions
 ├── src/
 │   ├── index.ts        # Event handlers

@@ -26,7 +26,7 @@ export async function compileApi(
 
   await runner.executeFile(apiPath)
 
-  const registry = (await runner.executeId('ae-sync:registry')) as {
+  const registry = (await runner.executeId('aesync:registry')) as {
     aesync: { _api_routes: ApiRoute[]; _api_middleware: MiddlewareFn[] }
   }
 

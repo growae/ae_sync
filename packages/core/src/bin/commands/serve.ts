@@ -30,7 +30,7 @@ async function runServe(opts: ServeOptions): Promise<void> {
   const { hostname } = opts
   const rootDir = process.cwd()
 
-  console.log('\x1b[36m◆\x1b[0m ae-sync serve (API-only)')
+  console.log('\x1b[36m◆\x1b[0m aesync serve (API-only)')
   console.log('')
 
   const build = await createBuild({

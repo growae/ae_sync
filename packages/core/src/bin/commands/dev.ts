@@ -25,7 +25,7 @@ interface DevOptions {
 export function registerDev(program: Command): void {
   program
     .command('dev')
-    .description('Start ae-sync in development mode with hot reload')
+    .description('Start aesync in development mode with hot reload')
     .option('-p, --port <port>', 'HTTP server port', '42069')
     .option('--hostname <host>', 'HTTP server hostname', 'localhost')
     .option('--config <path>', 'Path to config file')
@@ -41,7 +41,7 @@ async function runDev(opts: DevOptions): Promise<void> {
   const port = Number.parseInt(opts.port, 10)
   const { hostname } = opts
 
-  console.log('\x1b[36m◆\x1b[0m ae-sync dev')
+  console.log('\x1b[36m◆\x1b[0m aesync dev')
   console.log('')
 
   const rootDir = process.cwd()

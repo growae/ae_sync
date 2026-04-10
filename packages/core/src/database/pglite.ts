@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/pglite'
 import { applyMigrations } from './migrate.js'
 import type { Database } from './types.js'
 
-const DEFAULT_DIR = '.ae-sync/pglite'
+const DEFAULT_DIR = '.aesync/pglite'
 
 export async function createPGliteDatabase(
   directory?: string,

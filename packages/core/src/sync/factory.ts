@@ -29,7 +29,7 @@ export function createFactoryTracker(
     )
     if (contracts.size > 0 && !childExists) {
       console.log(
-        `[ae-sync] warn: factory "${name}" references unknown child contract "${config.contract}"`,
+        `[aesync] warn: factory "${name}" references unknown child contract "${config.contract}"`,
       )
     }
   }

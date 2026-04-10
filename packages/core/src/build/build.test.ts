@@ -47,18 +47,18 @@ describe('Build System', () => {
     const plugin = vitePluginAeSync({ rootDir: '/tmp/test' })
     const resolveId = plugin.resolveId as (id: string) => string | null
 
-    it('resolves ae-sync:registry', () => {
-      expect(resolveId.call(plugin, 'ae-sync:registry')).toBe(
-        '\0ae-sync:registry',
+    it('resolves aesync:registry', () => {
+      expect(resolveId.call(plugin, 'aesync:registry')).toBe(
+        '\0aesync:registry',
       )
     })
 
-    it('resolves ae-sync:schema', () => {
-      expect(resolveId.call(plugin, 'ae-sync:schema')).toBe('\0ae-sync:schema')
+    it('resolves aesync:schema', () => {
+      expect(resolveId.call(plugin, 'aesync:schema')).toBe('\0aesync:schema')
     })
 
-    it('resolves ae-sync:api', () => {
-      expect(resolveId.call(plugin, 'ae-sync:api')).toBe('\0ae-sync:api')
+    it('resolves aesync:api', () => {
+      expect(resolveId.call(plugin, 'aesync:api')).toBe('\0aesync:api')
     })
 
     it('returns null for non-virtual IDs', () => {
@@ -70,8 +70,8 @@ describe('Build System', () => {
     const plugin = vitePluginAeSync({ rootDir: '/tmp/test' })
     const load = plugin.load as (id: string) => string | null
 
-    it('loads ae-sync:registry with aesync object', () => {
-      const code = load.call(plugin, '\0ae-sync:registry')
+    it('loads aesync:registry with aesync object', () => {
+      const code = load.call(plugin, '\0aesync:registry')
       expect(code).toContain('aesync')
       expect(code).toContain('fns')
       expect(code).toContain('_api_routes')
@@ -82,14 +82,14 @@ describe('Build System', () => {
       expect(code).toContain('use(')
     })
 
-    it('loads ae-sync:schema re-exporting schema.ts', () => {
-      const code = load.call(plugin, '\0ae-sync:schema')
+    it('loads aesync:schema re-exporting schema.ts', () => {
+      const code = load.call(plugin, '\0aesync:schema')
       expect(code).toContain('export * from')
       expect(code).toContain('/tmp/test/schema.ts')
     })
 
-    it('loads ae-sync:api with db and client from globalThis', () => {
-      const code = load.call(plugin, '\0ae-sync:api')
+    it('loads aesync:api with db and client from globalThis', () => {
+      const code = load.call(plugin, '\0aesync:api')
       expect(code).toContain('globalThis.__AESYNC_DB__')
       expect(code).toContain('globalThis.__AESYNC_CLIENT__')
     })
@@ -159,7 +159,7 @@ describe('Build System', () => {
   })
 
   describe('Codegen', () => {
-    it('generates ae-sync-env.d.ts with event types', () => {
+    it('generates aesync-env.d.ts with event types', () => {
       const contracts = new Map<string, CompiledContract>()
       const parsed = parseAci(PAIR_ACI)
       contracts.set('Pair', {
@@ -171,9 +171,9 @@ describe('Build System', () => {
 
       const content = generateEnvDtsContent(contracts)
 
-      expect(content).toContain("declare module 'ae-sync:registry'")
-      expect(content).toContain("declare module 'ae-sync:schema'")
-      expect(content).toContain("declare module 'ae-sync:api'")
+      expect(content).toContain("declare module 'aesync:registry'")
+      expect(content).toContain("declare module 'aesync:schema'")
+      expect(content).toContain("declare module 'aesync:api'")
       expect(content).toContain("'Pair:Swap'")
       expect(content).toContain("'Pair:Mint'")
       expect(content).toContain("'Pair:Transfer'")

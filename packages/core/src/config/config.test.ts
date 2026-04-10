@@ -103,7 +103,7 @@ describe('createConfig', () => {
     it('applies default database as pglite', () => {
       const config = createConfig(validParams())
       expect(config.database.kind).toBe('pglite')
-      expect(config.database.directory).toBe('.ae-sync/pglite')
+      expect(config.database.directory).toBe('.aesync/pglite')
     })
 
     it('applies default port of 42069', () => {
@@ -116,7 +116,7 @@ describe('createConfig', () => {
         validParams({ database: { kind: 'postgres' } }),
       )
       expect(config.database.kind).toBe('postgres')
-      expect(config.database.directory).toBe('.ae-sync/pglite')
+      expect(config.database.directory).toBe('.aesync/pglite')
     })
   })
 

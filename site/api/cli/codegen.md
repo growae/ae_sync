@@ -1,11 +1,11 @@
-# ae-sync codegen
+# aesync codegen
 
-Generate TypeScript type definitions for your configured contracts. Outputs an `ae-sync-env.d.ts` file with typed event interfaces.
+Generate TypeScript type definitions for your configured contracts. Outputs an `aesync-env.d.ts` file with typed event interfaces.
 
 ## Usage
 
 ```bash
-ae-sync codegen [options]
+aesync codegen [options]
 ```
 
 ## Options
@@ -16,22 +16,22 @@ ae-sync codegen [options]
 
 ## What It Does
 
-1. Loads the config from `src/ae-sync.config.ts`
+1. Loads the config from `src/aesync.config.ts`
 2. Compiles all contract ACIs
-3. Generates `ae-sync-env.d.ts` with TypeScript type definitions for each contract's events
+3. Generates `aesync-env.d.ts` with TypeScript type definitions for each contract's events
 4. Closes the database connection and exits
 
 ## Output
 
 ```
-◆ ae-sync codegen
+◆ aesync codegen
 
-✓ Generated ae-sync-env.d.ts (3 contracts)
+✓ Generated aesync-env.d.ts (3 contracts)
 ```
 
 ## Generated Types
 
-The generated `ae-sync-env.d.ts` file contains event type definitions derived from contract ACIs. These types provide autocomplete and type checking for event arguments in your handler functions.
+The generated `aesync-env.d.ts` file contains event type definitions derived from contract ACIs. These types provide autocomplete and type checking for event arguments in your handler functions.
 
 ## When to Use
 
@@ -40,14 +40,14 @@ The generated `ae-sync-env.d.ts` file contains event type definitions derived fr
 - In CI/CD pipelines to verify types before deployment
 - When you need fresh type definitions without starting the dev server
 
-The `ae-sync dev` command runs codegen automatically on startup and on file changes, so you typically only need to run `codegen` manually in CI or when updating types without running the full dev server.
+The `aesync dev` command runs codegen automatically on startup and on file changes, so you typically only need to run `codegen` manually in CI or when updating types without running the full dev server.
 
 ## Examples
 
 ```bash
 # Generate types
-ae-sync codegen
+aesync codegen
 
 # With a custom config path
-ae-sync codegen --config ./custom-config.ts
+aesync codegen --config ./custom-config.ts
 ```

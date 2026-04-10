@@ -1,6 +1,6 @@
 # Contracts
 
-Contracts are defined in `ae-sync.config.ts` and tell ae_sync which on-chain contracts to index, where to find their ACI (Application Call Interface), and which block range to scan.
+Contracts are defined in `aesync.config.ts` and tell aesync which on-chain contracts to index, where to find their ACI (Application Call Interface), and which block range to scan.
 
 ## Basic Contract
 
@@ -29,7 +29,7 @@ Each contract entry accepts the following fields:
 
 ### `aci`
 
-The compiled ACI JSON for the contract. ae_sync uses this to:
+The compiled ACI JSON for the contract. aesync uses this to:
 - Compute event topic hashes
 - Decode event arguments into typed values
 - Generate TypeScript type definitions
@@ -38,7 +38,7 @@ You can export the ACI from the Sophia compiler or the Aeternity Explorer.
 
 ### `source`
 
-An alternative to `aci` -- provide the Sophia source directly and ae_sync will compile it:
+An alternative to `aci` -- provide the Sophia source directly and aesync will compile it:
 
 ```typescript
 contracts: {
@@ -138,7 +138,7 @@ Each contract gets its own sync state and backfill progress. Event handlers are 
 
 ## ACI Format
 
-The ACI JSON follows the standard Aeternity compiler output. The key parts ae_sync uses are the event definitions:
+The ACI JSON follows the standard Aeternity compiler output. The key parts aesync uses are the event definitions:
 
 ```json
 {
@@ -154,4 +154,4 @@ The ACI JSON follows the standard Aeternity compiler output. The key parts ae_sy
 }
 ```
 
-ae_sync computes keccak-256 hashes of event names and uses the type definitions to decode logged event arguments from ae_mdw responses.
+aesync computes keccak-256 hashes of event names and uses the type definitions to decode logged event arguments from ae_mdw responses.

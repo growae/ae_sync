@@ -1,10 +1,10 @@
 # Schemas
 
-Schemas define the PostgreSQL tables that your event handlers write to. ae_sync uses Drizzle ORM under the hood and provides `onchainTable` as a branded wrapper around `pgTable`.
+Schemas define the PostgreSQL tables that your event handlers write to. aesync uses Drizzle ORM under the hood and provides `onchainTable` as a branded wrapper around `pgTable`.
 
 ## Defining Tables
 
-Use `onchainTable` to create tables that ae_sync manages. These tables are:
+Use `onchainTable` to create tables that aesync manages. These tables are:
 - Automatically created on startup via migrations
 - Backed by shadow tables for reorg protection
 - Exposed through the auto-generated GraphQL API
@@ -24,7 +24,7 @@ export const transfers = onchainTable('transfers', {
 
 ## Column Types
 
-ae_sync re-exports all standard Drizzle column types plus Aeternity-specific helpers.
+aesync re-exports all standard Drizzle column types plus Aeternity-specific helpers.
 
 ### Standard Columns
 
@@ -131,7 +131,7 @@ export const balances = onchainTable(
 
 ## Multiple Tables
 
-Export all tables from `schema.ts`. ae_sync discovers them automatically:
+Export all tables from `schema.ts`. aesync discovers them automatically:
 
 ```typescript
 export const pairs = onchainTable('pairs', { /* ... */ })
@@ -156,4 +156,4 @@ export const transfers = onchainTable('transfers', (t) => ({
 
 ## Shadow Tables
 
-ae_sync automatically creates shadow tables (prefixed with `_reorg__`) for each `onchainTable`. These track previous row states and allow the framework to revert data if a chain reorganization occurs. You don't need to interact with shadow tables directly -- they are managed by the sync engine.
+aesync automatically creates shadow tables (prefixed with `_reorg__`) for each `onchainTable`. These track previous row states and allow the framework to revert data if a chain reorganization occurs. You don't need to interact with shadow tables directly -- they are managed by the sync engine.

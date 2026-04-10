@@ -1,5 +1,5 @@
 node_modules/
 dist/
-.ae-sync/
+.aesync/
 .env
 *.log

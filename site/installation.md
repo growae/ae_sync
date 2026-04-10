@@ -41,7 +41,7 @@ pnpm add @growae/aesync
 ### 3. Create your config
 
 ```typescript
-// src/ae-sync.config.ts
+// src/aesync.config.ts
 import { createConfig } from '@growae/aesync'
 
 export default createConfig({
@@ -92,9 +92,9 @@ export const MyContract_MyEvent: EventCallbackFn = async ({ event, context }) =>
 ```json
 {
   "scripts": {
-    "dev": "ae-sync dev",
-    "start": "ae-sync start",
-    "codegen": "ae-sync codegen"
+    "dev": "aesync dev",
+    "start": "aesync start",
+    "codegen": "aesync codegen"
   }
 }
 ```
@@ -103,7 +103,7 @@ export const MyContract_MyEvent: EventCallbackFn = async ({ event, context }) =>
 
 ### PGlite (default)
 
-No configuration needed. ae_sync uses an embedded PGlite instance stored in `.ae-sync/pglite/`. This is ideal for development -- no Postgres installation required.
+No configuration needed. aesync uses an embedded PGlite instance stored in `.aesync/pglite/`. This is ideal for development -- no Postgres installation required.
 
 ### PostgreSQL
 
@@ -122,7 +122,7 @@ export default createConfig({
 You can also set the connection string via the `DATABASE_URL` environment variable:
 
 ```bash
-DATABASE_URL=postgresql://user:pass@localhost:5432/mydb pnpm ae-sync start
+DATABASE_URL=postgresql://user:pass@localhost:5432/mydb pnpm aesync start
 ```
 
 ### Connection Pool
@@ -150,4 +150,4 @@ See the [Docker guide](/guides/docker) for containerized deployment options.
 | `AE_MDW_WS_URL` | ae_mdw WebSocket endpoint | (from config) |
 | `AE_NODE_URL` | Aeternity node URL | (from config) |
 
-Environment variables override values set in `ae-sync.config.ts`.
+Environment variables override values set in `aesync.config.ts`.

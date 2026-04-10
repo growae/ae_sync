@@ -1,6 +1,6 @@
 # GraphQL API
 
-ae_sync automatically generates a GraphQL API from your `onchainTable` definitions. Every table gets query operations with filtering, pagination, and ordering -- no configuration required.
+aesync automatically generates a GraphQL API from your `onchainTable` definitions. Every table gets query operations with filtering, pagination, and ordering -- no configuration required.
 
 ## Endpoint
 
@@ -14,7 +14,7 @@ Both GET and POST requests are supported.
 
 ## Auto-generated Queries
 
-For each `onchainTable`, ae_sync generates two queries:
+For each `onchainTable`, aesync generates two queries:
 
 ### Singular Query (by primary key)
 

@@ -1,10 +1,10 @@
 # API Routes
 
-ae_sync automatically generates a GraphQL API from your schema, but you can also define custom HTTP endpoints using Hono routes.
+aesync automatically generates a GraphQL API from your schema, but you can also define custom HTTP endpoints using Hono routes.
 
 ## Setup
 
-Create `src/api/index.ts` in your project. ae_sync discovers this file automatically and mounts your routes alongside the built-in GraphQL endpoint.
+Create `src/api/index.ts` in your project. aesync discovers this file automatically and mounts your routes alongside the built-in GraphQL endpoint.
 
 ```typescript
 // src/api/index.ts
@@ -21,7 +21,7 @@ export default api
 
 ## Route Registration
 
-Export route and middleware arrays that ae_sync will mount on the server:
+Export route and middleware arrays that aesync will mount on the server:
 
 ```typescript
 // src/api/index.ts
@@ -49,7 +49,7 @@ export const middleware = []
 
 ## Using Hono
 
-ae_sync uses [Hono](https://hono.dev/) as its HTTP framework. All Hono features are available in your API routes:
+aesync uses [Hono](https://hono.dev/) as its HTTP framework. All Hono features are available in your API routes:
 
 ### Path Parameters
 
@@ -131,7 +131,7 @@ export const routes = [
 
 ## Built-in Endpoints
 
-ae_sync provides these endpoints out of the box:
+aesync provides these endpoints out of the box:
 
 | Endpoint | Description |
 |---|---|

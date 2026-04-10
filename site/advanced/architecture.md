@@ -1,12 +1,12 @@
 # Architecture
 
-This page describes ae_sync's internal architecture for contributors and advanced users.
+This page describes aesync's internal architecture for contributors and advanced users.
 
 ## System Overview
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                        ae_sync                          │
+│                        aesync                          │
 │                                                         │
 │  ┌──────────┐   ┌──────────┐   ┌──────────────────┐    │
 │  │  Build    │──▶│  Config  │──▶│  ACI Compiler    │    │
@@ -49,12 +49,12 @@ This page describes ae_sync's internal architecture for contributors and advance
 
 The build system uses Vite and `vite-node` to compile the user's TypeScript project at runtime. It:
 
-- Loads `ae-sync.config.ts` via `vite-node`
+- Loads `aesync.config.ts` via `vite-node`
 - Compiles contract ACIs and computes event topic hashes
 - Discovers `schema.ts` exports (tables defined with `onchainTable`)
 - Discovers `index.ts` exports (event handler functions)
 - Optionally discovers `api/index.ts` (custom Hono routes)
-- Generates `ae-sync-env.d.ts` with typed event interfaces
+- Generates `aesync-env.d.ts` with typed event interfaces
 - In dev mode, watches files for changes and triggers rebuilds
 
 ### Config System
@@ -99,7 +99,7 @@ The database module handles:
 
 ### Shadow Tables
 
-For each `onchainTable`, ae_sync creates a shadow table (`_reorg__<tablename>`) that stores previous row states. When a chain reorganization is detected:
+For each `onchainTable`, aesync creates a shadow table (`_reorg__<tablename>`) that stores previous row states. When a chain reorganization is detected:
 
 1. The sync engine identifies the common ancestor block
 2. `revertToHeight()` restores rows from shadow tables to their pre-reorg state

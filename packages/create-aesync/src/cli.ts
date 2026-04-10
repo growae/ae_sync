@@ -105,7 +105,7 @@ async function main(): Promise<void> {
   console.log(`  ${cyan('cd')} ${projectName}`)
   console.log(`  ${cyan(`${pm} install`)}`)
   console.log(`  ${cyan('cp .env.example .env')}`)
-  console.log(`  ${cyan(`${runCmd} ae-sync dev`)}`)
+  console.log(`  ${cyan(`${runCmd} aesync dev`)}`)
   console.log()
   console.log(`  ${yellow('Docs:')} https://aesync.dev`)
   console.log()

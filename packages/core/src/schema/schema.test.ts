@@ -97,7 +97,7 @@ describe('column types', () => {
   })
 })
 
-describe('ae_sync-specific columns', () => {
+describe('aesync-specific columns', () => {
   it('aeAddress() returns a text column', () => {
     const table = onchainTable('addr_test', {
       id: aeAddress('id').primaryKey(),

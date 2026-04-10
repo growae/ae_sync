@@ -1,11 +1,11 @@
-# ae-sync dev
+# aesync dev
 
-Start ae_sync in development mode with hot reload. Uses PGlite by default so no PostgreSQL installation is needed.
+Start aesync in development mode with hot reload. Uses PGlite by default so no PostgreSQL installation is needed.
 
 ## Usage
 
 ```bash
-ae-sync dev [options]
+aesync dev [options]
 ```
 
 ## Options
@@ -22,7 +22,7 @@ ae-sync dev [options]
 ## What It Does
 
 1. Builds the project with file watching enabled (hot reload)
-2. Loads the config from `src/ae-sync.config.ts`
+2. Loads the config from `src/aesync.config.ts`
 3. Compiles contract ACIs and generates TypeScript types
 4. Creates/migrates database tables and shadow tables
 5. Starts the sync engine (historical backfill, then real-time)
@@ -32,7 +32,7 @@ ae-sync dev [options]
 ## Output
 
 ```
-◆ ae-sync dev
+◆ aesync dev
 
 ✓ Config loaded
   Network: mainnet
@@ -59,16 +59,16 @@ With `--verbose`:
 
 ```bash
 # Default development server
-ae-sync dev
+aesync dev
 
 # Custom port
-ae-sync dev --port 3000
+aesync dev --port 3000
 
 # Verbose mode with sync progress
-ae-sync dev --verbose
+aesync dev --verbose
 
 # Override middleware URL
-ae-sync dev --mdw-url https://testnet.aeternity.io/mdw
+aesync dev --mdw-url https://testnet.aeternity.io/mdw
 ```
 
 ## Differences from `start`

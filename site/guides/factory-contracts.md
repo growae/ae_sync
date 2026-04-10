@@ -1,12 +1,12 @@
 # Factory Contracts
 
-Factory contracts are a common pattern in DeFi where one contract deploys child contracts (e.g., a DEX factory that creates trading pair contracts). ae_sync supports this pattern natively -- you configure the factory event that creates new contracts, and ae_sync automatically discovers and indexes the child contracts.
+Factory contracts are a common pattern in DeFi where one contract deploys child contracts (e.g., a DEX factory that creates trading pair contracts). aesync supports this pattern natively -- you configure the factory event that creates new contracts, and aesync automatically discovers and indexes the child contracts.
 
 ## How It Works
 
 1. You define a factory contract with a `factory` field in the config
-2. When the factory event fires, ae_sync extracts the new contract address from the event arguments
-3. The new address is registered and ae_sync begins indexing events from the child contract
+2. When the factory event fires, aesync extracts the new contract address from the event arguments
+3. The new address is registered and aesync begins indexing events from the child contract
 
 ## Configuration
 
@@ -94,7 +94,7 @@ This is useful when the discovery logic is more complex than a single event para
 
 ## Lifecycle
 
-1. During historical backfill, ae_sync processes factory events first and discovers child addresses
+1. During historical backfill, aesync processes factory events first and discovers child addresses
 2. Child contract events from past blocks are then backfilled
 3. During real-time sync, new factory events immediately register child addresses
 4. Subsequent blocks containing child contract events are processed normally

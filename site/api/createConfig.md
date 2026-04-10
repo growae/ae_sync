@@ -1,6 +1,6 @@
 # createConfig
 
-Creates and validates an ae_sync configuration object. This is the main entry point for configuring your indexer.
+Creates and validates an aesync configuration object. This is the main entry point for configuring your indexer.
 
 ## Import
 
@@ -58,7 +58,7 @@ interface CreateConfigParameters {
 |---|---|---|---|
 | `kind` | `"postgres" \| "pglite"` | `"pglite"` | Database backend |
 | `connectionString` | `string` | - | PostgreSQL connection string |
-| `directory` | `string` | `".ae-sync/pglite"` | PGlite data directory |
+| `directory` | `string` | `".aesync/pglite"` | PGlite data directory |
 | `poolConfig` | `{ max?: number }` | - | Connection pool settings |
 
 ### `ContractConfig`

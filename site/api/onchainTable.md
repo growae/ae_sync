@@ -1,6 +1,6 @@
 # onchainTable
 
-Creates a table definition that ae_sync manages. Tables created with `onchainTable` are automatically migrated, backed by shadow tables for reorg protection, and exposed through the GraphQL API.
+Creates a table definition that aesync manages. Tables created with `onchainTable` are automatically migrated, backed by shadow tables for reorg protection, and exposed through the GraphQL API.
 
 ## Import
 
@@ -110,9 +110,9 @@ type NewTransfer = InferTableInsert<typeof transfers>
 
 ## How It Works
 
-`onchainTable` is a thin wrapper around Drizzle's `pgTable` that brands the table with an internal marker (`ONCHAIN_TABLE_MARKER`). This marker lets ae_sync distinguish your indexing tables from arbitrary Drizzle tables at runtime.
+`onchainTable` is a thin wrapper around Drizzle's `pgTable` that brands the table with an internal marker (`ONCHAIN_TABLE_MARKER`). This marker lets aesync distinguish your indexing tables from arbitrary Drizzle tables at runtime.
 
-At startup, ae_sync:
+At startup, aesync:
 1. Discovers all exported `onchainTable` definitions from `schema.ts`
 2. Runs migrations to create or update the tables
 3. Creates corresponding shadow tables (`_reorg__<tablename>`) for reorg protection

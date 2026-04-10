@@ -10,10 +10,5 @@
     "declaration": true,
     "outDir": "dist"
   },
-  "include": [
-    "src/**/*.ts",
-    "schema.ts",
-    "ae-sync.config.ts",
-    "ae-sync-env.d.ts"
-  ]
+  "include": ["src/**/*.ts", "schema.ts", "aesync.config.ts", "aesync-env.d.ts"]
 }

@@ -18,7 +18,7 @@ export function registerCodegen(program: Command): void {
 async function runCodegen(opts: CodegenOptions): Promise<void> {
   const rootDir = process.cwd()
 
-  console.log('\x1b[36m◆\x1b[0m ae-sync codegen')
+  console.log('\x1b[36m◆\x1b[0m aesync codegen')
   console.log('')
 
   const build = await createBuild({
@@ -31,7 +31,7 @@ async function runCodegen(opts: CodegenOptions): Promise<void> {
     const result = await build.run()
     const contractCount = result.contracts.size
     console.log(
-      `\x1b[32m✓\x1b[0m Generated ae-sync-env.d.ts (${contractCount} contract${contractCount !== 1 ? 's' : ''})`,
+      `\x1b[32m✓\x1b[0m Generated aesync-env.d.ts (${contractCount} contract${contractCount !== 1 ? 's' : ''})`,
     )
     await result.database.close()
   } catch (err) {

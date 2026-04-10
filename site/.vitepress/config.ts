@@ -2,13 +2,13 @@ import { defineConfig } from 'vitepress'
 import type { DefaultTheme } from 'vitepress'
 
 export default defineConfig({
-  title: 'ae_sync',
+  title: 'aesync',
   description: 'Contract indexing framework for Aeternity',
   cleanUrls: true,
   lastUpdated: true,
 
   head: [
-    ['meta', { property: 'og:title', content: 'ae_sync' }],
+    ['meta', { property: 'og:title', content: 'aesync' }],
     [
       'meta',
       {
@@ -85,10 +85,10 @@ function mainSidebar(): DefaultTheme.SidebarItem[] {
     {
       text: 'CLI',
       items: [
-        { text: 'ae-sync dev', link: '/api/cli/dev' },
-        { text: 'ae-sync start', link: '/api/cli/start' },
-        { text: 'ae-sync serve', link: '/api/cli/serve' },
-        { text: 'ae-sync codegen', link: '/api/cli/codegen' },
+        { text: 'aesync dev', link: '/api/cli/dev' },
+        { text: 'aesync start', link: '/api/cli/start' },
+        { text: 'aesync serve', link: '/api/cli/serve' },
+        { text: 'aesync codegen', link: '/api/cli/codegen' },
       ],
     },
     {

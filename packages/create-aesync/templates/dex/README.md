@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}}
 
-A DEX indexer built with [ae-sync](https://aesync.dev).
+A DEX indexer built with [aesync](https://aesync.dev).
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ pnpm dev
 ## Project Structure
 
 ```
-├── ae-sync.config.ts   # Factory + Pair contract configuration
+├── aesync.config.ts    # Factory + Pair contract configuration
 ├── schema.ts           # swapEvent, pairState, liquidityEvent tables
 ├── src/
 │   ├── factory.ts      # PairCreated event handler

@@ -1,11 +1,11 @@
-# ae-sync serve
+# aesync serve
 
 Start the HTTP server with GraphQL and custom API routes, but without the sync engine. Serves existing indexed data from the database.
 
 ## Usage
 
 ```bash
-ae-sync serve [options]
+aesync serve [options]
 ```
 
 ## Options
@@ -26,14 +26,14 @@ ae-sync serve [options]
 
 ## When to Use
 
-- **Separate API instances** -- run `ae-sync start` in one container for sync, and `ae-sync serve` in multiple containers for API scaling
+- **Separate API instances** -- run `aesync start` in one container for sync, and `aesync serve` in multiple containers for API scaling
 - **Read-only access** -- serve existing data without syncing
 - **Development** -- test API routes against a pre-populated database
 
 ## Output
 
 ```
-◆ ae-sync serve (API-only)
+◆ aesync serve (API-only)
 
 ✓ Config and schema loaded
 ✓ Server listening on http://localhost:42069
@@ -46,12 +46,12 @@ ae-sync serve [options]
 
 ```bash
 # Serve on default port
-ae-sync serve
+aesync serve
 
 # Custom port and hostname
-ae-sync serve --port 3000 --hostname 0.0.0.0
+aesync serve --port 3000 --hostname 0.0.0.0
 
-# In a Docker Compose setup alongside ae-sync start
+# In a Docker Compose setup alongside aesync start
 # see the Docker guide for full examples
 ```
 
@@ -65,7 +65,7 @@ In a production setup with separate containers:
                     └──────┬───────┘
                            │
                     ┌──────▼───────┐
-                    │ ae-sync start│  (sync + API)
+                    │ aesync start│  (sync + API)
                     └──────┬───────┘
                            │ writes
                     ┌──────▼───────┐
@@ -75,7 +75,7 @@ In a production setup with separate containers:
               ┌────────────┼────────────┐
               │            │            │
        ┌──────▼──────┐ ┌──▼──────┐ ┌──▼──────────┐
-       │ ae-sync     │ │ ae-sync │ │ ae-sync      │
+       │ aesync     │ │ aesync │ │ aesync      │
        │ serve       │ │ serve   │ │ serve        │
        │ (replica 1) │ │ (rep 2) │ │ (replica 3)  │
        └─────────────┘ └─────────┘ └──────────────┘

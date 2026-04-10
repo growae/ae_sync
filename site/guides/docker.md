@@ -1,10 +1,10 @@
 # Docker
 
-ae_sync can be deployed with Docker for production environments. There are two main patterns: a single container running both sync and API, or separate containers.
+aesync can be deployed with Docker for production environments. There are two main patterns: a single container running both sync and API, or separate containers.
 
 ## Single Container
 
-A single container runs `ae-sync start`, which handles both indexing and serving the API.
+A single container runs `aesync start`, which handles both indexing and serving the API.
 
 ### Dockerfile
 
@@ -17,7 +17,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm ae-sync codegen
+RUN pnpm aesync codegen
 
 FROM base AS runtime
 WORKDIR /app
@@ -25,7 +25,7 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/src ./src
 COPY --from=build /app/package.json ./
 EXPOSE 42069
-CMD ["pnpm", "ae-sync", "start", "--hostname", "0.0.0.0"]
+CMD ["pnpm", "aesync", "start", "--hostname", "0.0.0.0"]
 ```
 
 ### docker-compose.yml
@@ -71,7 +71,7 @@ For higher availability, split the sync engine and API server into separate serv
 services:
   sync:
     build: .
-    command: ["pnpm", "ae-sync", "start", "--hostname", "0.0.0.0"]
+    command: ["pnpm", "aesync", "start", "--hostname", "0.0.0.0"]
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/aesync
       AE_MDW_URL: https://mainnet.aeternity.io/mdw
@@ -81,7 +81,7 @@ services:
 
   api:
     build: .
-    command: ["pnpm", "ae-sync", "serve", "--hostname", "0.0.0.0"]
+    command: ["pnpm", "aesync", "serve", "--hostname", "0.0.0.0"]
     ports:
       - "42069:42069"
     environment:
@@ -110,7 +110,7 @@ volumes:
   pgdata:
 ```
 
-The `ae-sync serve` command starts the HTTP server with GraphQL and custom routes but does not run the sync engine. It reads from the same database that the sync container writes to.
+The `aesync serve` command starts the HTTP server with GraphQL and custom routes but does not run the sync engine. It reads from the same database that the sync container writes to.
 
 ## Health Checks
 
@@ -140,5 +140,5 @@ The `/ready` endpoint returns HTTP 200 only when all contracts have completed ba
 - Always use PostgreSQL (not PGlite) in production
 - Set `DATABASE_URL` as an environment variable rather than hardcoding in config
 - Use `--hostname 0.0.0.0` to bind to all interfaces inside containers
-- The `ae-sync start` command requires `DATABASE_URL` to be set and will exit if it's missing
+- The `aesync start` command requires `DATABASE_URL` to be set and will exit if it's missing
 - Monitor the `/health` endpoint for sync status and event processing metrics

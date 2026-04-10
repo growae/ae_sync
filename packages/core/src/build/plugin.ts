@@ -2,15 +2,15 @@ import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 
 const VIRTUAL_PREFIX = '\0'
-const REGISTRY_ID = 'ae-sync:registry'
-const SCHEMA_ID = 'ae-sync:schema'
-const API_ID = 'ae-sync:api'
+const REGISTRY_ID = 'aesync:registry'
+const SCHEMA_ID = 'aesync:schema'
+const API_ID = 'aesync:api'
 
 const VIRTUAL_IDS = new Set([REGISTRY_ID, SCHEMA_ID, API_ID])
 
 export function vitePluginAeSync(options: { rootDir: string }): Plugin {
   return {
-    name: 'ae-sync',
+    name: 'aesync',
 
     resolveId(id: string) {
       if (VIRTUAL_IDS.has(id)) {

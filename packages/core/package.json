@@ -15,7 +15,7 @@
   "license": "MIT",
   "files": ["dist", "src"],
   "bin": {
-    "ae-sync": "dist/esm/bin/ae-sync.js"
+    "aesync": "dist/esm/bin/aesync.js"
   },
   "scripts": {
     "build": "tsc --project tsconfig.build.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
