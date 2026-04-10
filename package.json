@@ -9,6 +9,7 @@
     "build:core": "pnpm --filter @growae/aesync run build",
     "dev": "pnpm -r --filter='./packages/**' run dev",
     "test": "vitest",
+    "bench": "vitest run packages/core/src/__tests__/benchmark.test.ts",
     "test:cov": "vitest --coverage",
     "check": "biome check --write .",
     "check:ci": "biome ci .",
