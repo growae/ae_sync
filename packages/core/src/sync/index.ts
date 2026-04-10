@@ -8,6 +8,7 @@ import { createFactoryTracker } from './factory.js'
 import { createHistoricalSync } from './historical.js'
 import { matchEvent } from './matcher.js'
 import { createRealtimeSync } from './realtime.js'
+import type { RealtimeSync } from './realtime.js'
 import { createSyncStateManager } from './state.js'
 import type {
   CompiledContract,
@@ -87,6 +88,7 @@ export function createSync(params: CreateSyncParams): SyncEngine {
   let stopped = false
   let startTime = Date.now()
   let totalEvents = 0
+  let realtimeSync: RealtimeSync | null = null
 
   function emitProgress() {
     const progress = getStatus()
@@ -198,10 +200,10 @@ export function createSync(params: CreateSyncParams): SyncEngine {
       if (stopped) return
 
       if (mdwWs) {
-        const realtime = createRealtimeSync(mdwHttp, mdwWs, contracts)
-        realtime.on('event', (log) => processLog(log))
-        realtime.on('error', (err) => emitter.emit('error', err))
-        realtime.start()
+        realtimeSync = createRealtimeSync(mdwHttp, mdwWs, contracts)
+        realtimeSync.on('event', (log) => processLog(log))
+        realtimeSync.on('error', (err) => emitter.emit('error', err))
+        realtimeSync.start()
         emitter.emit('realtimeStarted')
       }
 
@@ -210,6 +212,10 @@ export function createSync(params: CreateSyncParams): SyncEngine {
 
     async stop() {
       stopped = true
+      if (realtimeSync) {
+        realtimeSync.stop()
+        realtimeSync = null
+      }
       for (const contract of contracts.values()) {
         await stateManager.updateState(contract.address, contract.name, {
           status: 'stopped',

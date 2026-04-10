@@ -1,7 +1,9 @@
 import { Hono } from 'hono'
 import { describe, expect, it } from 'vitest'
+import type { DrizzleInstance } from '../database/types.js'
 import { healthRoutes } from './health.js'
 import { corsMiddleware } from './middleware.js'
+import { sqlRoutes } from './sql.js'
 import type { SyncStatusProvider } from './types.js'
 
 function createTestApp(provider: SyncStatusProvider) {
@@ -117,5 +119,77 @@ describe('health routes', () => {
       })
       expect(res.headers.get('access-control-allow-origin')).toBe('*')
     })
+  })
+})
+
+describe('sql routes', () => {
+  function createSqlApp(mockExecute: (...args: unknown[]) => unknown) {
+    const db = { execute: mockExecute } as unknown as DrizzleInstance
+    const app = new Hono()
+    app.route('/', sqlRoutes(db))
+    return app
+  }
+
+  it('POST /sql with SELECT query returns rows', async () => {
+    const rows = [{ id: 1, name: 'Alice' }]
+    const app = createSqlApp(() => rows)
+
+    const res = await app.request('/sql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sql: 'SELECT * FROM users' }),
+    })
+
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.rows).toEqual(rows)
+    expect(body.rowCount).toBe(1)
+  })
+
+  it('POST /sql with WITH (CTE) query is allowed', async () => {
+    const rows = [{ total: 42 }]
+    const app = createSqlApp(() => rows)
+
+    const res = await app.request('/sql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sql: 'WITH cte AS (SELECT 1) SELECT * FROM cte',
+      }),
+    })
+
+    expect(res.status).toBe(200)
+  })
+
+  it('POST /sql with INSERT query returns 403', async () => {
+    const app = createSqlApp(() => [])
+
+    const res = await app.request('/sql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sql: "INSERT INTO users (name) VALUES ('Bob')",
+      }),
+    })
+
+    expect(res.status).toBe(403)
+    const body = await res.json()
+    expect(body.error).toBe('Only SELECT queries are allowed')
+  })
+
+  it('POST /sql with invalid SQL returns 400', async () => {
+    const app = createSqlApp(() => {
+      throw new Error('syntax error at position 7')
+    })
+
+    const res = await app.request('/sql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sql: 'SELECT *** FROM nowhere' }),
+    })
+
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body.error).toBe('syntax error at position 7')
   })
 })

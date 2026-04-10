@@ -109,9 +109,10 @@ export type {
 } from '../mdw/index.js'
 
 // Server
-export { createServer } from '../server/index.js'
+export { createServer, sqlRoutes } from '../server/index.js'
 export type {
   ContractSyncStatus,
+  CreateServerOptions,
   ServerConfig,
   SyncStatusProvider,
 } from '../server/index.js'
@@ -145,4 +146,9 @@ export {
   generateEnvDts,
   compileContracts,
 } from '../build/index.js'
-export type { Build, BuildResult, CompiledApi } from '../build/index.js'
+export type {
+  Build,
+  BuildOptions,
+  BuildResult,
+  CompiledApi,
+} from '../build/index.js'

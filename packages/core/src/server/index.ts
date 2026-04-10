@@ -1,16 +1,25 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import type { DrizzleInstance } from '../database/types.js'
 import { healthRoutes } from './health.js'
 import { corsMiddleware, requestLogger } from './middleware.js'
+import { sqlRoutes } from './sql.js'
 import type { ServerConfig, SyncStatusProvider } from './types.js'
 
 export { healthRoutes } from './health.js'
 export { corsMiddleware, requestLogger } from './middleware.js'
+export { sqlRoutes } from './sql.js'
 export type {
   ContractSyncStatus,
   ServerConfig,
   SyncStatusProvider,
 } from './types.js'
+
+export interface CreateServerOptions {
+  config: ServerConfig
+  statusProvider?: SyncStatusProvider
+  db?: DrizzleInstance
+}
 
 const defaultStatusProvider: SyncStatusProvider = () => ({
   ready: false,
@@ -18,14 +27,31 @@ const defaultStatusProvider: SyncStatusProvider = () => ({
 })
 
 export function createServer(
-  config: ServerConfig,
-  statusProvider: SyncStatusProvider = defaultStatusProvider,
+  configOrOptions: ServerConfig | CreateServerOptions,
+  statusProvider?: SyncStatusProvider,
 ) {
+  let config: ServerConfig
+  let provider: SyncStatusProvider
+  let db: DrizzleInstance | undefined
+
+  if ('config' in configOrOptions) {
+    config = configOrOptions.config
+    provider = configOrOptions.statusProvider ?? defaultStatusProvider
+    db = configOrOptions.db
+  } else {
+    config = configOrOptions
+    provider = statusProvider ?? defaultStatusProvider
+  }
+
   const app = new Hono()
 
   app.use('*', corsMiddleware())
   app.use('*', requestLogger())
-  app.route('/', healthRoutes(statusProvider))
+  app.route('/', healthRoutes(provider))
+
+  if (db) {
+    app.route('/', sqlRoutes(db))
+  }
 
   let httpServer: ReturnType<typeof serve> | null = null
 

@@ -9,13 +9,23 @@ const CONFIG_FILES = ['ae-sync.config.ts', 'ae-sync.config.js'] as const
 export async function compileConfig(
   runner: ViteNodeRunner,
   rootDir: string,
+  customPath?: string,
 ): Promise<AeSyncConfig> {
   let configPath: string | undefined
-  for (const name of CONFIG_FILES) {
-    const candidate = resolve(rootDir, name)
-    if (existsSync(candidate)) {
-      configPath = candidate
-      break
+
+  if (customPath) {
+    const resolved = resolve(rootDir, customPath)
+    if (!existsSync(resolved)) {
+      throw new Error(`Config file not found: ${resolved}`)
+    }
+    configPath = resolved
+  } else {
+    for (const name of CONFIG_FILES) {
+      const candidate = resolve(rootDir, name)
+      if (existsSync(candidate)) {
+        configPath = candidate
+        break
+      }
     }
   }
 

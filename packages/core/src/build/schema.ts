@@ -7,8 +7,11 @@ import { isOnchainTable } from '../schema/onchain.js'
 export async function compileSchema(
   runner: ViteNodeRunner,
   rootDir: string,
+  customPath?: string,
 ): Promise<Record<string, Table>> {
-  const schemaPath = resolve(rootDir, 'schema.ts')
+  const schemaPath = customPath
+    ? resolve(rootDir, customPath)
+    : resolve(rootDir, 'schema.ts')
   if (!existsSync(schemaPath)) {
     throw new Error(`Schema file not found: ${schemaPath}`)
   }

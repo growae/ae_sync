@@ -15,13 +15,17 @@ export function registerCodegen(program: Command): void {
     })
 }
 
-async function runCodegen(_opts: CodegenOptions): Promise<void> {
+async function runCodegen(opts: CodegenOptions): Promise<void> {
   const rootDir = process.cwd()
 
   console.log('\x1b[36m◆\x1b[0m ae-sync codegen')
   console.log('')
 
-  const build = await createBuild({ rootDir, watch: false })
+  const build = await createBuild({
+    rootDir,
+    watch: false,
+    configPath: opts.config,
+  })
 
   try {
     const result = await build.run()

@@ -33,11 +33,15 @@ export interface Build {
   close(): Promise<void>
 }
 
-export async function createBuild(options: {
+export interface BuildOptions {
   rootDir: string
   watch?: boolean
-}): Promise<Build> {
-  const { rootDir, watch = false } = options
+  configPath?: string
+  schemaPath?: string
+}
+
+export async function createBuild(options: BuildOptions): Promise<Build> {
+  const { rootDir, watch = false, configPath, schemaPath } = options
 
   const server = await createViteServer({
     root: rootDir,
@@ -62,9 +66,9 @@ export async function createBuild(options: {
 
   return {
     async run(): Promise<BuildResult> {
-      const config = await compileConfig(runner, rootDir)
+      const config = await compileConfig(runner, rootDir, configPath)
       const contracts = await compileContracts(config)
-      const schema = await compileSchema(runner, rootDir)
+      const schema = await compileSchema(runner, rootDir, schemaPath)
 
       const database = await createDatabase(config.database)
       await applyMigrations(database.qb, schema as Record<string, PgTable>)
