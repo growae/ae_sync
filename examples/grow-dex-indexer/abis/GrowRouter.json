@@ -1,0 +1,52 @@
+{
+  "contract": {
+    "name": "GrowRouter",
+    "type_defs": [],
+    "event": {
+      "variant": [
+        { "SwapExecuted": ["address", "address", "address", "int", "int"] }
+      ]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [{ "name": "factory", "type": "address" }],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "swap_exact_tokens_for_tokens",
+        "arguments": [
+          { "name": "amount_in", "type": "int" },
+          { "name": "amount_out_min", "type": "int" },
+          { "name": "path", "type": { "list": ["address"] } },
+          { "name": "to", "type": "address" },
+          { "name": "deadline", "type": "int" }
+        ],
+        "returns": { "list": ["int"] },
+        "stateful": true
+      },
+      {
+        "name": "swap_tokens_for_exact_tokens",
+        "arguments": [
+          { "name": "amount_out", "type": "int" },
+          { "name": "amount_in_max", "type": "int" },
+          { "name": "path", "type": { "list": ["address"] } },
+          { "name": "to", "type": "address" },
+          { "name": "deadline", "type": "int" }
+        ],
+        "returns": { "list": ["int"] },
+        "stateful": true
+      },
+      {
+        "name": "get_amounts_out",
+        "arguments": [
+          { "name": "amount_in", "type": "int" },
+          { "name": "path", "type": { "list": ["address"] } }
+        ],
+        "returns": { "list": ["int"] },
+        "stateful": false
+      }
+    ]
+  }
+}

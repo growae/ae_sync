@@ -1,0 +1,15 @@
+{
+  "name": "grow-dex-indexer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ae-sync dev",
+    "start": "ae-sync start",
+    "serve": "ae-sync serve",
+    "codegen": "ae-sync codegen"
+  },
+  "dependencies": {
+    "@growae/aesync": "workspace:*"
+  }
+}

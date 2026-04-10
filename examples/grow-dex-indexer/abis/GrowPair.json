@@ -1,0 +1,44 @@
+{
+  "contract": {
+    "name": "GrowPair",
+    "type_defs": [],
+    "event": {
+      "variant": [
+        { "Swap": ["address", "int", "int", "int", "int", "address"] },
+        { "Mint": ["address", "int", "int"] },
+        { "Burn": ["address", "int", "int", "address"] },
+        { "Sync": ["int", "int"] },
+        { "Transfer": ["address", "address", "int"] }
+      ]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [
+          { "name": "token0", "type": "address" },
+          { "name": "token1", "type": "address" }
+        ],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "get_reserves",
+        "arguments": [],
+        "returns": { "tuple": ["int", "int", "int"] },
+        "stateful": false
+      },
+      {
+        "name": "token0",
+        "arguments": [],
+        "returns": "address",
+        "stateful": false
+      },
+      {
+        "name": "token1",
+        "arguments": [],
+        "returns": "address",
+        "stateful": false
+      }
+    ]
+  }
+}

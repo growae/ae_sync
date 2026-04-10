@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: grow_dex
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ae-mdw:
+    image: aeternity/ae_mdw:latest
+    ports:
+      - '4000:4000'
+      - '4001:4001'
+    environment:
+      AE_MDW_DB_HOST: postgres
+      AE_MDW_DB_NAME: ae_mdw
+      AE_MDW_DB_USER: postgres
+      AE_MDW_DB_PASSWORD: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  grow-dex-indexer:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/grow_dex
+      AE_MDW_URL: http://ae-mdw:4000
+      AE_MDW_WS_URL: ws://ae-mdw:4001
+    ports:
+      - '42069:42069'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ae-mdw:
+        condition: service_started
+
+volumes:
+  pgdata:

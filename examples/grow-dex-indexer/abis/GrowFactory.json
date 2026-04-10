@@ -1,0 +1,32 @@
+{
+  "contract": {
+    "name": "GrowFactory",
+    "type_defs": [],
+    "event": {
+      "variant": [{ "PairCreated": ["address", "address", "address"] }]
+    },
+    "functions": [
+      {
+        "name": "init",
+        "arguments": [],
+        "returns": "unit",
+        "stateful": true
+      },
+      {
+        "name": "get_pair",
+        "arguments": [
+          { "name": "token0", "type": "address" },
+          { "name": "token1", "type": "address" }
+        ],
+        "returns": { "option": ["address"] },
+        "stateful": false
+      },
+      {
+        "name": "all_pairs_length",
+        "arguments": [],
+        "returns": "int",
+        "stateful": false
+      }
+    ]
+  }
+}
