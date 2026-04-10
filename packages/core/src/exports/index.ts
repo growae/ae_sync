@@ -65,6 +65,15 @@ export type {
   NetworkConfig,
 } from '../config/index.js'
 
+// Database
+export { createDatabase } from '../database/index.js'
+export {
+  createShadowTables,
+  revertToHeight,
+  pruneFinalized,
+} from '../database/index.js'
+export type { Database, DrizzleInstance } from '../database/index.js'
+
 // MDW client
 export {
   createMdwClient,
