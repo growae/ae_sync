@@ -121,3 +121,19 @@ export {
   graphqlMiddleware,
   buildGraphQLSchema,
 } from '../graphql/index.js'
+
+// Indexing
+export {
+  createIndexingCache,
+  createHandlerContext,
+  processEventBatch,
+} from '../indexing/index.js'
+export type {
+  CreateHandlerContextParams,
+  EventCallbackFn,
+  HandlerContext,
+  IndexingCache,
+  IndexingDb,
+  ProcessBatchResult,
+  ProcessEventBatchParams,
+} from '../indexing/index.js'
