@@ -77,6 +77,16 @@
           }
         }
       }
+    },
+    {
+      "include": ["packages/core/src/bin/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
     }
   ],
   "vcs": {

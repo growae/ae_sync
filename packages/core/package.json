@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "blakejs": "^1.2.1",
+    "commander": "^13.0.0",
     "dotenv": "^16.4.0",
     "drizzle-orm": "^0.44.0",
     "eventemitter3": "^5.0.0",
