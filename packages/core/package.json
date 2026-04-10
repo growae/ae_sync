@@ -12,6 +12,8 @@
     },
     "./package.json": "./package.json"
   },
+  "license": "MIT",
+  "files": ["dist", "src"],
   "bin": {
     "ae-sync": "dist/esm/bin/ae-sync.js"
   },

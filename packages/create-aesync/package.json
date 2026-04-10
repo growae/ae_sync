@@ -2,12 +2,17 @@
   "name": "@growae/create-aesync",
   "version": "0.0.1",
   "type": "module",
+  "license": "MIT",
   "bin": {
-    "create-aesync": "./src/cli.ts"
+    "create-aesync": "./dist/cli.js"
   },
   "exports": {
-    ".": { "import": "./src/index.ts" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
+  "files": ["dist", "templates"],
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist",
