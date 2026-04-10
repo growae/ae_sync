@@ -1,5 +1,5 @@
 {
-  "name": "site",
+  "name": "ae-sync-docs",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,6 +8,6 @@
     "preview": "vitepress preview"
   },
   "devDependencies": {
-    "vitepress": "^1.6.0"
+    "vitepress": "^1.6.3"
   }
 }
