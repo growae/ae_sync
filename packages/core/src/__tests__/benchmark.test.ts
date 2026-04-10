@@ -179,13 +179,11 @@ describe('full batch processing throughput', () => {
       callback: {
         name: 'Token:Transfer',
         fn: async ({ context }: { event: unknown; context: any }) => {
-          context.db
-            .insert(benchUsers)
-            .values({
-              id: `user_batch_${i}`,
-              name: `User ${i}`,
-              balance: i * 100,
-            })
+          context.db.insert(benchUsers).values({
+            id: `user_batch_${i}`,
+            name: `User ${i}`,
+            balance: i * 100,
+          })
         },
       },
     }))
