@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm'
 import type { PgTable } from 'drizzle-orm/pg-core/table'
 import type { Database } from '../database/types.js'
+import { aesyncCheckpoint } from '../schema/internal.js'
 import type { MatchedEvent } from '../sync/types.js'
 import { createHandlerContext } from './context.js'
 import type { IndexingCache, ProcessBatchResult } from './types.js'
@@ -36,7 +37,9 @@ export async function processEventBatch(
 
   await database.transaction(async (tx) => {
     await tx.execute(
-      sql.raw(`SET LOCAL aesync.checkpoint_height = '${checkpointHeight}'`),
+      sql.raw(
+        `SET LOCAL aesync.checkpoint_height = '${Number(checkpointHeight)}'`,
+      ),
     )
 
     for (const matched of events) {
@@ -56,11 +59,20 @@ export async function processEventBatch(
 
     await cache.flush(tx, tables)
 
-    await tx.execute(
-      sql.raw(
-        `INSERT INTO "_aesync_checkpoint" (height, block_hash, events_count) VALUES (${checkpointHeight}, '${checkpointBlockHash}', ${events.length}) ON CONFLICT (height) DO UPDATE SET block_hash = '${checkpointBlockHash}', events_count = ${events.length}`,
-      ),
-    )
+    await tx
+      .insert(aesyncCheckpoint)
+      .values({
+        height: checkpointHeight,
+        blockHash: checkpointBlockHash,
+        eventsCount: events.length,
+      })
+      .onConflictDoUpdate({
+        target: aesyncCheckpoint.height,
+        set: {
+          blockHash: sql`excluded.block_hash`,
+          eventsCount: sql`excluded.events_count`,
+        },
+      })
   })
 
   const duration = performance.now() - start
@@ -68,5 +80,6 @@ export async function processEventBatch(
   return {
     eventsProcessed: events.length,
     duration,
+    registrations,
   }
 }

@@ -39,6 +39,7 @@ export type EventCallbackFn = (args: {
 export interface ProcessBatchResult {
   eventsProcessed: number
   duration: number
+  registrations: Array<{ name: string; address: string }>
 }
 
 export interface IndexingCache {

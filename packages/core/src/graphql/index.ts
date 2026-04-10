@@ -1,6 +1,7 @@
 import type { Table } from 'drizzle-orm'
 import { createYoga } from 'graphql-yoga'
 import { Hono } from 'hono'
+import type { DrizzleInstance } from '../database/types.js'
 import { buildGraphQLSchema } from './schema.js'
 
 export { buildGraphQLSchema, BigIntScalar, JSONScalar } from './schema.js'
@@ -10,7 +11,7 @@ export { buildWhereConditions } from './filters.js'
 
 export function graphqlMiddleware(
   tables: Record<string, Table>,
-  db: any,
+  db: DrizzleInstance,
 ): Hono {
   const schema = buildGraphQLSchema(tables, db)
   const yoga = createYoga({ schema, graphqlEndpoint: '/' })

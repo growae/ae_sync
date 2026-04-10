@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
+import { VERSION } from '../exports/index.js'
 import type { SyncStatusProvider } from './types.js'
-
-const VERSION = '0.0.1'
 
 export function healthRoutes(statusProvider: SyncStatusProvider): Hono {
   const app = new Hono()

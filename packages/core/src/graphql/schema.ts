@@ -13,6 +13,7 @@ import {
   GraphQLString,
   Kind,
 } from 'graphql'
+import type { DrizzleInstance } from '../database/types.js'
 import { buildWhereConditions } from './filters.js'
 import { paginateQuery } from './pagination.js'
 
@@ -177,7 +178,7 @@ function findPrimaryKey(cols: Record<string, any>) {
 
 export function buildGraphQLSchema(
   tables: Record<string, Table>,
-  db: any,
+  db: DrizzleInstance,
 ): GraphQLSchema {
   const queryFields: Record<string, any> = {}
 

@@ -8,6 +8,7 @@ import {
   gt,
   lt,
 } from 'drizzle-orm'
+import type { DrizzleInstance } from '../database/types.js'
 
 export function encodeCursor(value: unknown): string {
   return btoa(JSON.stringify(value))
@@ -50,7 +51,7 @@ const MAX_LIMIT = 1000
 
 export async function paginateQuery(
   table: Table,
-  db: any,
+  db: DrizzleInstance,
   args: PaginateArgs,
 ): Promise<Page<Record<string, unknown>>> {
   const first = Math.min(args.first ?? DEFAULT_LIMIT, MAX_LIMIT)
@@ -73,7 +74,7 @@ export async function paginateQuery(
     }
   }
 
-  let query = db.select().from(table)
+  let query = db.select().from(table).$dynamic()
 
   if (conditions.length > 0) {
     query = query.where(and(...conditions))

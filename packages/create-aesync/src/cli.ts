@@ -111,7 +111,9 @@ async function main(): Promise<void> {
   console.log()
 }
 
-main().catch(() => {
+main().catch((err) => {
+  // biome-ignore lint/suspicious/noConsole: CLI entry point must report fatal errors
+  console.error(err)
   process.exit(1)
 })
 

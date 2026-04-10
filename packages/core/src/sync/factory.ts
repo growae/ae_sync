@@ -21,8 +21,19 @@ export interface FactoryTracker {
  */
 export function createFactoryTracker(
   factoryConfigs: Map<string, FactoryConfig>,
-  _contracts: Map<string, CompiledContract>,
+  contracts: Map<string, CompiledContract>,
 ): FactoryTracker {
+  for (const [name, config] of factoryConfigs) {
+    const childExists = [...contracts.values()].some(
+      (c) => c.name === config.contract,
+    )
+    if (contracts.size > 0 && !childExists) {
+      console.log(
+        `[ae-sync] warn: factory "${name}" references unknown child contract "${config.contract}"`,
+      )
+    }
+  }
+
   const trackedAddresses: string[] = []
 
   return {
