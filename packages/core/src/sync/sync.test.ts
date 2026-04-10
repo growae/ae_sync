@@ -1,7 +1,9 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { eventHashHex } from '../aci/hash.js'
 import { parseAci } from '../aci/parser.js'
 import type { AciContract, AciEvent } from '../aci/types.js'
+import { createDatabase } from '../database/index.js'
+import type { Database } from '../database/types.js'
 import type { MdwHttpClient } from '../mdw/http.js'
 import type { MdwContractLog, MdwPaginatedResponse } from '../mdw/types.js'
 import { createCheckpointManager } from './checkpoint.js'
@@ -477,14 +479,32 @@ describe('Factory Tracker', () => {
 // ── Sync State Manager ───────────────────────────────────────────────
 
 describe('Sync State Manager', () => {
-  it('returns undefined for unknown state', () => {
-    const mgr = createSyncStateManager()
+  let db: Database
+
+  async function setup(): Promise<Database> {
+    const database = await createDatabase({
+      kind: 'pglite',
+      directory: 'memory://',
+    })
+    const { aesyncContractState } = await import('../schema/internal.js')
+    await database.migrate({ aesyncContractState })
+    return database
+  }
+
+  afterEach(async () => {
+    if (db) await db.close()
+  })
+
+  it('returns undefined for unknown state', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
     expect(mgr.getState('ct_unknown', 'Unknown')).toBeUndefined()
   })
 
-  it('creates and updates state', () => {
-    const mgr = createSyncStateManager()
-    mgr.updateState('ct_token', 'Token', {
+  it('creates and updates state', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_token', 'Token', {
       status: 'backfilling',
       lastHeight: 100,
       eventsProcessed: 50,
@@ -497,30 +517,53 @@ describe('Sync State Manager', () => {
     expect(state!.eventsProcessed).toBe(50)
   })
 
-  it('updates partial state', () => {
-    const mgr = createSyncStateManager()
-    mgr.updateState('ct_token', 'Token', { status: 'backfilling' })
-    mgr.updateState('ct_token', 'Token', { lastHeight: 200 })
+  it('persists state to database and loads it back', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_token', 'Token', {
+      status: 'realtime',
+      lastHeight: 500,
+      eventsProcessed: 1000,
+      lastCursor: 'cursor_abc',
+    })
+
+    const mgr2 = createSyncStateManager(db)
+    await mgr2.load()
+    const state = mgr2.getState('ct_token', 'Token')
+    expect(state).toBeDefined()
+    expect(state!.status).toBe('realtime')
+    expect(state!.lastHeight).toBe(500)
+    expect(state!.eventsProcessed).toBe(1000)
+    expect(state!.lastCursor).toBe('cursor_abc')
+  })
+
+  it('updates partial state', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_token', 'Token', { status: 'backfilling' })
+    await mgr.updateState('ct_token', 'Token', { lastHeight: 200 })
 
     const state = mgr.getState('ct_token', 'Token')
     expect(state!.status).toBe('backfilling')
     expect(state!.lastHeight).toBe(200)
   })
 
-  it('getAllStates returns all tracked contracts', () => {
-    const mgr = createSyncStateManager()
-    mgr.updateState('ct_a', 'A', { status: 'backfilling' })
-    mgr.updateState('ct_b', 'B', { status: 'realtime' })
+  it('getAllStates returns all tracked contracts', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_a', 'A', { status: 'backfilling' })
+    await mgr.updateState('ct_b', 'B', { status: 'realtime' })
 
     expect(mgr.getAllStates()).toHaveLength(2)
   })
 
-  it('resetAboveHeight resets contracts above threshold', () => {
-    const mgr = createSyncStateManager()
-    mgr.updateState('ct_a', 'A', { status: 'realtime', lastHeight: 100 })
-    mgr.updateState('ct_b', 'B', { status: 'realtime', lastHeight: 200 })
+  it('resetAboveHeight resets contracts above threshold', async () => {
+    db = await setup()
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_a', 'A', { status: 'realtime', lastHeight: 100 })
+    await mgr.updateState('ct_b', 'B', { status: 'realtime', lastHeight: 200 })
 
-    mgr.resetAboveHeight(150)
+    await mgr.resetAboveHeight(150)
 
     expect(mgr.getState('ct_a', 'A')!.status).toBe('realtime')
     expect(mgr.getState('ct_a', 'A')!.lastHeight).toBe(100)
@@ -532,14 +575,18 @@ describe('Sync State Manager', () => {
 // ── SyncProgress computation ─────────────────────────────────────────
 
 describe('SyncProgress', () => {
-  it('computes progress from state manager', () => {
-    const mgr = createSyncStateManager()
-    mgr.updateState('ct_a', 'A', {
+  it('computes progress from state manager', async () => {
+    const db = await createDatabase({ kind: 'pglite', directory: 'memory://' })
+    const { aesyncContractState } = await import('../schema/internal.js')
+    await db.migrate({ aesyncContractState })
+
+    const mgr = createSyncStateManager(db)
+    await mgr.updateState('ct_a', 'A', {
       status: 'backfilling',
       lastHeight: 100,
       eventsProcessed: 50,
     })
-    mgr.updateState('ct_b', 'B', {
+    await mgr.updateState('ct_b', 'B', {
       status: 'realtime',
       lastHeight: 200,
       eventsProcessed: 100,
@@ -554,5 +601,7 @@ describe('SyncProgress', () => {
       'backfilling',
     )
     expect(states.find((s) => s.contractName === 'B')!.status).toBe('realtime')
+
+    await db.close()
   })
 })

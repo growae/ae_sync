@@ -77,6 +77,7 @@ async function runDev(opts: DevOptions): Promise<void> {
   const eventCallbackMap = new Map(indexing.map((cb) => [cb.name, cb]))
 
   const sync: SyncEngine = createSync({
+    database,
     mdwHttp: mdw.http,
     mdwWs: mdw.ws,
     contracts,

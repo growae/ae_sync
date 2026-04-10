@@ -1,4 +1,5 @@
 import EventEmitter from 'eventemitter3'
+import type { Database } from '../database/types.js'
 import type { MdwHttpClient } from '../mdw/http.js'
 import type { MdwContractLog } from '../mdw/types.js'
 import type { MdwWebSocketClient } from '../mdw/websocket.js'
@@ -48,7 +49,7 @@ export interface SyncEvents {
 
 export interface SyncEngine {
   start(): Promise<void>
-  stop(): void
+  stop(): Promise<void>
   getStatus(): SyncProgress
   onProgress(fn: (progress: SyncProgress) => void): void
   on<K extends keyof SyncEvents>(
@@ -58,6 +59,7 @@ export interface SyncEngine {
 }
 
 export interface CreateSyncParams {
+  database: Database
   mdwHttp: MdwHttpClient
   mdwWs?: MdwWebSocketClient
   contracts: Map<string, CompiledContract>
@@ -70,9 +72,9 @@ export interface CreateSyncParams {
  * are emitted for the indexing layer to consume.
  */
 export function createSync(params: CreateSyncParams): SyncEngine {
-  const { mdwHttp, mdwWs, contracts, eventCallbacks } = params
+  const { database, mdwHttp, mdwWs, contracts, eventCallbacks } = params
   const emitter = new EventEmitter<SyncEvents>()
-  const stateManager = createSyncStateManager()
+  const stateManager = createSyncStateManager(database)
   const checkpointManager = createCheckpointManager()
 
   const factoryConfigs = new Map(
@@ -91,7 +93,7 @@ export function createSync(params: CreateSyncParams): SyncEngine {
     emitter.emit('progress', progress)
   }
 
-  function processLog(log: MdwContractLog) {
+  async function processLog(log: MdwContractLog) {
     const matched = matchEvent(log, contracts, eventCallbacks)
     if (!matched) return
 
@@ -120,7 +122,7 @@ export function createSync(params: CreateSyncParams): SyncEngine {
       }
     }
 
-    stateManager.updateState(log.contract_id, matched.contractName, {
+    await stateManager.updateState(log.contract_id, matched.contractName, {
       lastHeight: log.height,
       eventsProcessed:
         (stateManager.getState(log.contract_id, matched.contractName)
@@ -133,31 +135,31 @@ export function createSync(params: CreateSyncParams): SyncEngine {
   async function runBackfill(contract: CompiledContract) {
     const state = stateManager.getState(contract.address, contract.name)
 
-    stateManager.updateState(contract.address, contract.name, {
+    await stateManager.updateState(contract.address, contract.name, {
       status: 'backfilling',
     })
 
     try {
       const generator = createHistoricalSync(mdwHttp, contract, {
         lastCursor: state?.lastCursor,
-        startHeight: undefined, // determined by contract config externally
+        startHeight: undefined,
       })
 
       for await (const batch of generator) {
         if (stopped) return
         for (const log of batch) {
-          processLog(log)
+          await processLog(log)
         }
         emitProgress()
       }
 
-      stateManager.updateState(contract.address, contract.name, {
+      await stateManager.updateState(contract.address, contract.name, {
         status: 'realtime',
       })
       emitter.emit('backfillComplete', contract.name)
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
-      stateManager.updateState(contract.address, contract.name, {
+      await stateManager.updateState(contract.address, contract.name, {
         status: 'error',
         error: message,
       })
@@ -180,8 +182,10 @@ export function createSync(params: CreateSyncParams): SyncEngine {
       startTime = Date.now()
       totalEvents = 0
 
+      await stateManager.load()
+
       for (const contract of contracts.values()) {
-        stateManager.updateState(contract.address, contract.name, {
+        await stateManager.updateState(contract.address, contract.name, {
           status: 'pending',
         })
       }
@@ -204,10 +208,10 @@ export function createSync(params: CreateSyncParams): SyncEngine {
       emitProgress()
     },
 
-    stop() {
+    async stop() {
       stopped = true
       for (const contract of contracts.values()) {
-        stateManager.updateState(contract.address, contract.name, {
+        await stateManager.updateState(contract.address, contract.name, {
           status: 'stopped',
         })
       }
