@@ -1,0 +1,38 @@
+{
+  "name": "aesync",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm --filter @growae/aesync run build && pnpm -r --filter='./packages/**' --filter='!@growae/aesync' run build",
+    "build:core": "pnpm --filter @growae/aesync run build",
+    "dev": "pnpm -r --filter='./packages/**' run dev",
+    "test": "vitest",
+    "test:cov": "vitest --coverage",
+    "check": "biome check --write .",
+    "check:ci": "biome ci .",
+    "check:types": "pnpm -r --filter='./packages/**' run check:types",
+    "docs:dev": "pnpm --filter site run dev",
+    "docs:build": "pnpm --filter site run build",
+    "docs:preview": "pnpm --filter site run preview",
+    "clean": "pnpm -r --filter='./packages/**' run clean",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@changesets/cli": "^2.27.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "lint-staged": "^16.4.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "lint-staged": {
+    "*": "biome check --write --no-errors-on-unmatched"
+  },
+  "engines": {
+    "node": ">=18.19"
+  }
+}

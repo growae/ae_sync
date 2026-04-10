@@ -1,0 +1,7 @@
+node_modules
+dist
+.ae-sync
+coverage
+*.tsbuildinfo
+.env
+.env.local
