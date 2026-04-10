@@ -137,3 +137,12 @@ export type {
   ProcessBatchResult,
   ProcessEventBatchParams,
 } from '../indexing/index.js'
+
+// Build
+export {
+  createBuild,
+  vitePluginAeSync,
+  generateEnvDts,
+  compileContracts,
+} from '../build/index.js'
+export type { Build, BuildResult, CompiledApi } from '../build/index.js'
