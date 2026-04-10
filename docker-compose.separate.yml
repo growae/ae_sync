@@ -1,0 +1,50 @@
+services:
+  ae-mdw:
+    image: aeternity/ae_mdw:latest
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    environment:
+      AE__CHAIN__PERSIST: "true"
+      AE__CHAIN__DB_PATH: /data/mnesia
+    volumes:
+      - mnesia_data:/data/mnesia
+      - mdw_data:/data/mdw.db
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: aesync
+      POSTGRES_PASSWORD: aesync
+      POSTGRES_DB: aesync
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  ae-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    command: ["node", "packages/core/dist/esm/bin/ae-sync.js", "start"]
+    working_dir: /build
+    ports:
+      - "42069:42069"
+    environment:
+      DATABASE_URL: postgresql://aesync:aesync@postgres:5432/aesync
+      AE_MDW_URL: http://ae-mdw:4000
+      AE_MDW_WS_URL: ws://ae-mdw:4001/v3/websocket
+    depends_on:
+      ae-mdw:
+        condition: service_started
+      postgres:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  mnesia_data:
+  mdw_data:
+  pg_data:

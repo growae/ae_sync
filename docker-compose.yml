@@ -1,0 +1,23 @@
+services:
+  aesync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "42069:42069"
+      # - "4000:4000"   # ae_mdw HTTP
+      # - "4001:4001"   # ae_mdw WebSocket
+      # - "3013:3013"   # AE node external
+    environment:
+      AE_NETWORK: ${AE_NETWORK:-mainnet}
+      DATABASE_URL: postgresql://aesync:aesync@localhost:5432/aesync
+    volumes:
+      - mnesia_data:/data/mnesia
+      - mdw_data:/data/mdw.db
+      - pg_data:/data/postgres
+    restart: unless-stopped
+
+volumes:
+  mnesia_data:
+  mdw_data:
+  pg_data:
