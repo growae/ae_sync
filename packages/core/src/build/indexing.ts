@@ -41,11 +41,11 @@ function validateHandlerName(
     )
   }
 
-  const contract = contracts.get(contractName)
+  const contract = [...contracts.values()].find((c) => c.name === contractName)
   if (!contract) {
     throw new Error(
       `Handler "${name}" references unknown contract "${contractName}". ` +
-        `Available: ${[...contracts.keys()].join(', ')}`,
+        `Available: ${[...contracts.values()].map((c) => c.name).join(', ')}`,
     )
   }
 

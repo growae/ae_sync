@@ -6,7 +6,7 @@ import GrowRouterAci from './abis/GrowRouter.json'
 export default createConfig({
   network: {
     name: 'mainnet',
-    mdwUrl: process.env.AE_MDW_URL ?? 'https://mainnet.aeternity.io/mdw/v3',
+    mdwUrl: process.env.AE_MDW_URL ?? 'https://mainnet.aeternity.io/mdw',
     mdwWsUrl:
       process.env.AE_MDW_WS_URL ??
       'wss://mainnet.aeternity.io/mdw/v3/websocket',

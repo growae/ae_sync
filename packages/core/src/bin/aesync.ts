@@ -9,7 +9,7 @@ import { registerServe } from './commands/serve.js'
 import { registerStart } from './commands/start.js'
 
 const require = createRequire(import.meta.url)
-const pkg = require('../../package.json') as { version: string }
+const pkg = require('../../../package.json') as { version: string }
 
 const program = new Command()
 

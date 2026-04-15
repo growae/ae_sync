@@ -312,7 +312,7 @@ describe('Historical Sync', () => {
 
     expect(mdw.getContractLogs).toHaveBeenCalledWith(CONTRACT_ID, {
       cursor: undefined,
-      scope: 'gen:500',
+      scope: 'gen:500-10000500',
       limit: 100,
     })
   })

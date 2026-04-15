@@ -144,7 +144,7 @@ export function createSync(params: CreateSyncParams): SyncEngine {
     try {
       const generator = createHistoricalSync(mdwHttp, contract, {
         lastCursor: state?.lastCursor,
-        startHeight: undefined,
+        startHeight: contract.startHeight,
       })
 
       for await (const batch of generator) {
@@ -192,9 +192,10 @@ export function createSync(params: CreateSyncParams): SyncEngine {
         })
       }
 
-      const backfillPromises = [...contracts.values()].map((c) =>
-        runBackfill(c),
+      const backfillContracts = [...contracts.values()].filter(
+        (c) => c.address !== '',
       )
+      const backfillPromises = backfillContracts.map((c) => runBackfill(c))
       await Promise.all(backfillPromises)
 
       if (stopped) return

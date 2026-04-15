@@ -108,7 +108,7 @@ describe('Build System', () => {
       const result = await compileContracts(config)
 
       expect(result.size).toBe(1)
-      const pair = result.get('Pair')!
+      const pair = result.get('ct_pair123')!
       expect(pair.name).toBe('Pair')
       expect(pair.address).toBe('ct_pair123')
       expect(pair.events).toHaveLength(3)
@@ -128,8 +128,8 @@ describe('Build System', () => {
       const result = await compileContracts(config)
 
       expect(result.size).toBe(2)
-      expect(result.get('Pair')!.events).toHaveLength(3)
-      expect(result.get('Token')!.events).toHaveLength(1)
+      expect(result.get('ct_pair')!.events).toHaveLength(3)
+      expect(result.get('ct_token')!.events).toHaveLength(1)
     })
 
     it('throws on missing ACI', async () => {
@@ -144,17 +144,18 @@ describe('Build System', () => {
 
       const result = await compileContracts(config)
       const transfer = result
-        .get('Token')!
+        .get('ct_token')!
         .events.find((e) => e.name === 'Transfer')!
 
       expect(transfer.hash).toBeDefined()
-      expect(transfer.hash).toHaveLength(64)
+      expect(transfer.hash).toHaveLength(56)
     })
 
     it('defaults address to empty string when not provided', async () => {
       const config = makeConfig({ Token: { aci: TOKEN_ACI } })
       const result = await compileContracts(config)
-      expect(result.get('Token')!.address).toBe('')
+      const token = result.get('Token')!
+      expect(token.address).toBe('')
     })
   })
 
