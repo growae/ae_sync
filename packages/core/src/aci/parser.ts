@@ -104,17 +104,32 @@ export function parseSophiaType(raw: unknown): SophiaType {
   return 'string'
 }
 
+const INDEXABLE_TYPES: Set<string> = new Set([
+  'int',
+  'bool',
+  'address',
+  'hash',
+  'signature',
+  'bytes',
+])
+
+function isIndexable(t: SophiaType): boolean {
+  if (typeof t === 'string') return INDEXABLE_TYPES.has(t)
+  return false
+}
+
 function parseEvents(variant: Record<string, unknown[]>[]): AciEvent[] {
   return variant.map((entry) => {
     const name = Object.keys(entry)[0]!
     const rawTypes = entry[name]!
 
-    const fields: AciEventField[] = rawTypes.map((rawType, i) => ({
-      index: i,
-      name: `arg${i}`,
-      type: parseSophiaType(rawType),
-      indexed: i < MAX_INDEXED_FIELDS,
-    }))
+    let indexedCount = 0
+    const fields: AciEventField[] = rawTypes.map((rawType, i) => {
+      const type = parseSophiaType(rawType)
+      const indexed = isIndexable(type) && indexedCount < MAX_INDEXED_FIELDS
+      if (indexed) indexedCount++
+      return { index: i, name: `arg${i}`, type, indexed }
+    })
 
     return {
       name,

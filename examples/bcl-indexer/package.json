@@ -1,0 +1,15 @@
+{
+  "name": "bcl-indexer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "aesync dev",
+    "start": "aesync start",
+    "serve": "aesync serve",
+    "codegen": "aesync codegen"
+  },
+  "dependencies": {
+    "@growae/aesync": "workspace:*"
+  }
+}

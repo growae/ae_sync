@@ -20,14 +20,6 @@ services:
     ports:
       - '4000:4000'
       - '4001:4001'
-    environment:
-      AE_MDW_DB_HOST: postgres
-      AE_MDW_DB_NAME: ae_mdw
-      AE_MDW_DB_USER: postgres
-      AE_MDW_DB_PASSWORD: postgres
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   grow-dex-indexer:
     build:

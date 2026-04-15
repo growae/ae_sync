@@ -1,3 +1,5 @@
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { Table } from 'drizzle-orm'
 import type { PgTable } from 'drizzle-orm/pg-core/table'
 import { createServer as createViteServer } from 'vite'
@@ -5,7 +7,10 @@ import { ViteNodeRunner } from 'vite-node/client'
 import { ViteNodeServer } from 'vite-node/server'
 import type { AeSyncConfig } from '../config/types.js'
 import { createDatabase } from '../database/index.js'
-import { applyMigrations } from '../database/migrate.js'
+import {
+  applyInternalMigrations,
+  applyMigrations,
+} from '../database/migrate.js'
 import type { Database } from '../database/types.js'
 import { type MdwClient, createMdwClient } from '../mdw/index.js'
 import type { CompiledContract, EventCallback } from '../sync/types.js'
@@ -43,9 +48,10 @@ export interface BuildOptions {
 export async function createBuild(options: BuildOptions): Promise<Build> {
   const { rootDir, watch = false, configPath, schemaPath } = options
 
+  const coreDir = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
   const server = await createViteServer({
     root: rootDir,
-    plugins: [vitePluginAeSync({ rootDir })],
+    plugins: [vitePluginAeSync({ rootDir, coreDir })],
     server: { hmr: watch },
     logLevel: 'silent',
   })
@@ -71,9 +77,11 @@ export async function createBuild(options: BuildOptions): Promise<Build> {
       const schema = await compileSchema(runner, rootDir, schemaPath)
 
       const database = await createDatabase(config.database)
+      await applyInternalMigrations(database.qb)
       await applyMigrations(database.qb, schema as Record<string, PgTable>)
 
       const indexing = await compileIndexing(runner, rootDir, contracts)
+      ;(globalThis as Record<string, unknown>).__AESYNC_DB__ = database.qb
       const api = await compileApi(runner, rootDir)
 
       await generateEnvDts(rootDir, contracts)

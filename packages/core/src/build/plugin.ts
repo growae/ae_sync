@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 
@@ -8,13 +9,27 @@ const API_ID = 'aesync:api'
 
 const VIRTUAL_IDS = new Set([REGISTRY_ID, SCHEMA_ID, API_ID])
 
-export function vitePluginAeSync(options: { rootDir: string }): Plugin {
+export function vitePluginAeSync(options: {
+  rootDir: string
+  coreDir?: string
+}): Plugin {
+  const coreRequire = options.coreDir
+    ? createRequire(resolve(options.coreDir, 'package.json'))
+    : null
+
   return {
     name: 'aesync',
 
     resolveId(id: string) {
       if (VIRTUAL_IDS.has(id)) {
         return VIRTUAL_PREFIX + id
+      }
+      if (coreRequire && !id.startsWith('.') && !id.startsWith('/')) {
+        try {
+          return coreRequire.resolve(id)
+        } catch {
+          // fall through to default resolution
+        }
       }
       return null
     },

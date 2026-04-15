@@ -211,11 +211,11 @@ describe('Event Hash', () => {
     expect(hash.length).toBe(32)
   })
 
-  it('computes consistent hex hash', () => {
+  it('computes consistent base32hex hash', () => {
     const hex1 = eventHashHex('Swap')
     const hex2 = eventHashHex('Swap')
     expect(hex1).toBe(hex2)
-    expect(hex1).toHaveLength(64)
+    expect(hex1).toHaveLength(56)
   })
 
   it('produces different hashes for different event names', () => {

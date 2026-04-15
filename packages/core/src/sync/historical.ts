@@ -22,18 +22,16 @@ export async function* createHistoricalSync(
 ): AsyncGenerator<MdwContractLog[], void, undefined> {
   let cursor = opts?.lastCursor
 
-  const scopeParts: string[] = []
-  if (opts?.startHeight != null) {
-    scopeParts.push(`gen:${opts.startHeight}`)
+  const start = opts?.startHeight
+  const end = opts?.endHeight
+  let scope: string | undefined
+  if (start != null && end != null) {
+    scope = `gen:${start}-${end}`
+  } else if (start != null) {
+    scope = `gen:${start}-${start + 10_000_000}`
+  } else if (end != null) {
+    scope = `gen:0-${end}`
   }
-  if (opts?.endHeight != null) {
-    if (scopeParts.length > 0) {
-      scopeParts[0] = `${scopeParts[0]}-${opts.endHeight}`
-    } else {
-      scopeParts.push(`gen:0-${opts.endHeight}`)
-    }
-  }
-  const scope = scopeParts.length > 0 ? scopeParts[0] : undefined
 
   while (true) {
     const page: MdwPaginatedResponse<MdwContractLog> =

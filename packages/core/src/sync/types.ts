@@ -49,6 +49,8 @@ export interface CompiledContract {
   aci: AciContract
   events: AciEvent[]
   factory?: FactoryConfig
+  startHeight?: number
+  endHeight?: number
 }
 
 export interface MatchedEvent {

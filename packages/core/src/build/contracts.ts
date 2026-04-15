@@ -13,14 +13,19 @@ export async function compileContracts(
     }
 
     const parsed = parseAci(contractConfig.aci)
+    const address = contractConfig.address ?? ''
 
-    result.set(name, {
+    const compiled: CompiledContract = {
       name,
-      address: contractConfig.address ?? '',
+      address,
       aci: parsed,
       events: parsed.events,
       factory: contractConfig.factory,
-    })
+      startHeight: contractConfig.startHeight,
+      endHeight: contractConfig.endHeight,
+    }
+
+    result.set(address || name, compiled)
   }
 
   return result

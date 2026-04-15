@@ -1,6 +1,11 @@
 import { sql } from 'drizzle-orm'
 import { getTableConfig } from 'drizzle-orm/pg-core'
 import type { PgTable } from 'drizzle-orm/pg-core/table'
+import {
+  aesyncCheckpoint,
+  aesyncContractState,
+  aesyncMeta,
+} from '../schema/internal.js'
 import type { DrizzleInstance } from './types.js'
 
 function extractSqlString(chunks: unknown[]): string {
@@ -97,6 +102,25 @@ function buildCreateIndexes(table: PgTable): string[] {
   }
 
   return stmts
+}
+
+export async function applyInternalMigrations(
+  qb: DrizzleInstance,
+): Promise<void> {
+  const internalTables: PgTable[] = [
+    aesyncMeta,
+    aesyncContractState,
+    aesyncCheckpoint,
+  ]
+  for (const table of internalTables) {
+    const ddl = buildCreateTable(table)
+    await qb.execute(sql.raw(ddl))
+
+    const indexes = buildCreateIndexes(table)
+    for (const idx of indexes) {
+      await qb.execute(sql.raw(idx))
+    }
+  }
 }
 
 export async function applyMigrations(

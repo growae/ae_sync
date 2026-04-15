@@ -63,7 +63,7 @@ export function createMdwHttpClient(
     path: string,
     params?: URLSearchParams,
   ): Promise<T> {
-    const url = new URL(path, base)
+    const url = new URL(`${base}${path}`)
     if (params) {
       for (const [k, v] of params) {
         url.searchParams.set(k, v)
